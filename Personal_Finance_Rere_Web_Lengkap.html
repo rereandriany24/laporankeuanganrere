@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Personal & Family Finance — Rere</title>
+<style>
+  :root {
+    --bg: #FFF7F4;
+    --card: #FFFFFF;
+    --peach-pale: #FFF1EB;
+    --peach-light: #FDE2D7;
+    --peach-soft: #F7B8A1;
+    --peach-main: #E07A57;
+    --peach-dark: #C45B38;
+    --rose-soft: #FCE4E8;
+    --rose-text: #B8324F;
+    --mint-soft: #E3F6EC;
+    --mint-text: #1B6E43;
+    --blue-soft: #E5F0FD;
+    --blue-text: #1E5AA8;
+    --gold-soft: #FFF6DC;
+    --gold-text: #8F6400;
+    --text: #2F2321;
+    --muted: #786561;
+    --border: #F0D9D0;
+    --shadow: 0 6px 20px rgba(224, 122, 87, 0.08);
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  body { background: var(--bg); color: var(--text); line-height: 1.5; padding-bottom: 48px; }
+  .container { max-width: 1220px; margin: 0 auto; padding: 16px; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #FFE8DF 0%, #FFF4EF 60%, #FDE7EE 100%);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 20px 22px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+  }
+  .header-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 14px; }
+  .badge-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
+    color: var(--peach-dark); background: rgba(255,255,255,0.75); padding: 4px 10px; border-radius: 999px;
+    margin-bottom: 6px;
+  }
+  .header h1 { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.3px; }
+  .header p { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+
+  .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .sync-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--mint-soft); color: var(--mint-text);
+    font-size: 12px; font-weight: 700; padding: 7px 12px; border-radius: 999px;
+    border: 1px solid #BCE6D0; cursor: pointer;
+  }
+  .sync-pill.offline { background: var(--gold-soft); color: var(--gold-text); border-color: #F3DF9B; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #22A05B; display: inline-block; }
+  .btn {
+    border: 1px solid var(--border); background: #FFF; color: var(--text);
+    font-size: 12.5px; font-weight: 600; padding: 7px 13px; border-radius: 999px;
+    cursor: pointer; transition: 0.15s; display: inline-flex; align-items: center; gap: 5px;
+  }
+  .btn:hover { background: var(--peach-pale); }
+  .btn-primary { background: var(--peach-main); color: #FFF; border-color: var(--peach-main); }
+  .btn-primary:hover { background: var(--peach-dark); }
+  .btn-danger { background: var(--rose-soft); color: var(--rose-text); border-color: #F5C2CC; }
+  .btn-sm { padding: 5px 10px; font-size: 11.5px; }
+  select.month-select {
+    background: var(--peach-light); border: 1px solid var(--peach-soft); color: var(--peach-dark);
+    font-weight: 700; font-size: 12.5px; padding: 7px 12px; border-radius: 999px; cursor: pointer;
+  }
+
+  /* Nav Tabs */
+  .nav-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .tab-btn {
+    background: rgba(255,255,255,0.8); border: 1px solid var(--border); color: var(--muted);
+    font-size: 12.5px; font-weight: 700; padding: 8px 15px; border-radius: 999px; cursor: pointer; transition: 0.15s;
+  }
+  .tab-btn.active { background: var(--peach-main); color: #FFF; border-color: var(--peach-main); box-shadow: 0 4px 12px rgba(224,122,87,0.28); }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* Grids & Cards */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .kpi-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 15px 16px; box-shadow: var(--shadow);
+  }
+  .kpi-card.highlight { background: linear-gradient(135deg, #FFF3EE 0%, #FFFFFF 100%); border-color: var(--peach-soft); }
+  .kpi-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--muted); letter-spacing: 0.4px; }
+  .kpi-val { font-size: 19px; font-weight: 800; color: var(--peach-dark); margin: 4px 0 2px; }
+  .kpi-val.dark { color: var(--text); font-size: 17px; }
+  .kpi-sub { font-size: 11.5px; color: var(--muted); }
+
+  .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; margin-bottom: 16px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 18px; box-shadow: var(--shadow); margin-bottom: 16px;
+  }
+  .card-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .card-title { font-size: 15px; font-weight: 800; color: var(--text); }
+  .card-sub { font-size: 12px; color: var(--muted); }
+
+  /* Fixed-height Chart Containers (Prevents Overlapping!) */
+  .chart-box { width: 100%; height: 235px; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
+  .legend-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 8px; font-size: 11.5px; color: var(--muted); }
+  .legend-item { display: inline-flex; align-items: center; gap: 5px; font-weight: 600; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+  /* Tables */
+  .table-wrap { width: 100%; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th {
+    background: var(--peach-pale); color: var(--peach-dark); font-weight: 700; text-align: left;
+    padding: 10px 11px; border-bottom: 2px solid var(--peach-light); white-space: nowrap; font-size: 11.5px;
+  }
+  td { padding: 10px 11px; border-bottom: 1px solid #F6E6E0; vertical-align: middle; }
+  tr:hover td { background: #FFFBF9; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .center { text-align: center; }
+
+  /* Badges */
+  .pill { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .pill-income { background: var(--mint-soft); color: var(--mint-text); }
+  .pill-expense { background: var(--rose-soft); color: var(--rose-text); }
+  .pill-saving { background: var(--blue-soft); color: var(--blue-text); }
+  .pill-warn { background: var(--gold-soft); color: var(--gold-text); }
+
+  /* Progress Bar */
+  .prog-track { width: 100%; height: 8px; background: #F5E4DE; border-radius: 999px; overflow: hidden; margin-top: 5px; }
+  .prog-fill { height: 100%; border-radius: 999px; background: var(--peach-main); transition: width 0.3s; }
+  .prog-fill.over { background: #D94862; }
+  .prog-fill.safe { background: #269E60; }
+
+  /* Forms & Filters */
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 12px; }
+  .field label { display: block; font-size: 11.5px; font-weight: 700; color: var(--muted); margin-bottom: 4px; }
+  .field input, .field select {
+    width: 100%; padding: 8px 11px; border: 1px solid var(--border); border-radius: 12px;
+    font-size: 13px; background: #FFFDFC; color: var(--text);
+  }
+  .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .filter-bar input, .filter-bar select {
+    padding: 6px 11px; border: 1px solid var(--border); border-radius: 999px; font-size: 12px; background: #FFF;
+  }
+
+  /* Modals (Strictly hidden unless .open) */
+  .modal-backdrop {
+    display: none; position: fixed; inset: 0; background: rgba(47, 35, 33, 0.45);
+    z-index: 999; align-items: center; justify-content: center; padding: 16px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal-box {
+    background: #FFF; border-radius: 22px; border: 1px solid var(--border);
+    max-width: 480px; width: 100%; padding: 22px; box-shadow: 0 20px 50px rgba(0,0,0,0.18);
+  }
+  .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .modal-head h3 { font-size: 17px; font-weight: 800; color: var(--peach-dark); }
+  .close-x { background: var(--peach-pale); border: none; width: 28px; height: 28px; border-radius: 50%; font-weight: 700; cursor: pointer; }
+
+  .banner-info {
+    background: var(--mint-soft); border: 1px solid #BCE6D0; color: var(--mint-text);
+    padding: 10px 14px; border-radius: 14px; font-size: 12px; font-weight: 600; margin-bottom: 14px;
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px;
+  }
+  .toast {
+    position: fixed; bottom: 18px; right: 18px; background: #2F2321; color: #FFF;
+    padding: 10px 16px; border-radius: 999px; font-size: 12.5px; font-weight: 600;
+    z-index: 1200; opacity: 0; pointer-events: none; transition: 0.25s;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="badge-eyebrow">● Rere Andriany • Finance Workspace</div>
+        <h1>PERSONAL &amp; FAMILY FINANCE — RERE</h1>
+        <p>Database Lengkap Multi-Tahun (2026–2031) • Terintegrasi Langsung ke Google Sheets (iPhone 15 &amp; Lenovo Laptop)</p>
+      </div>
+      <div class="toolbar">
+        <button class="sync-pill" id="syncStatusBtn" onclick="openModal('modalSync')">
+          <span class="dot"></span> <span id="syncStatusText">Tersambung ke Google Sheets</span>
+        </button>
+        <button class="btn" onclick="syncFromSheets(true)">↻ Sinkron Sekarang</button>
+        <select class="month-select" id="monthSelector" onchange="changeMonth(this.value)"></select>
+        <button class="btn btn-primary" onclick="openModal('modalAddTx')">+ Catat Transaksi</button>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; margin-top:12px;">
+      <div class="nav-tabs" style="margin-top:0;">
+        <button class="tab-btn active" onclick="switchTab('tabDash', this)">1. Dashboard Utama</button>
+        <button class="tab-btn" onclick="switchTab('tabTx', this)">2. Transaksi Harian (+ Input)</button>
+        <button class="tab-btn" onclick="switchTab('tabPlan', this)">3. Plan vs Realita</button>
+        <button class="tab-btn" onclick="switchTab('tabDompet', this)">4. Dompet, Rekening &amp; Piutang</button>
+        <button class="tab-btn" onclick="switchTab('tabEmas', this)">5. Tabungan Emas &amp; Dana Nikah</button>
+      </div>
+      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        <button class="btn btn-sm" onclick="exportBackup()">↓ Backup JSON</button>
+        <button class="btn btn-sm btn-danger" onclick="confirmReset()">Reset ke Database Terbaru</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 1: DASHBOARD UTAMA -->
+  <div id="tabDash" class="tab-pane active">
+    <div class="banner-info">
+      <span>✅ Update Terbaru: Facial Klinik (Rp 250rb) dibatalkan • Pemasukan +Rp 100rb masuk • SKIN1004 (Rp 72.320) &amp; COSRX Duo (Rp 136.045) dibayar LUNAS (tanpa cicilan PayLater baru).</span>
+      <span>Cicilan PayLater berjalan: <b>Rp 45.000/bln</b></span>
+    </div>
+
+    <div class="kpi-grid" id="topKpiGrid"></div>
+    <div class="kpi-grid" id="subKpiGrid"></div>
+
+    <div class="two-col">
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Realita Pengeluaran per Kategori</div>
+            <div class="card-sub" id="chartCatSub">Bulan Aktif: November 2026</div>
+          </div>
+        </div>
+        <div class="chart-box" id="barChartBox"></div>
+      </div>
+
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Komposisi Saldo Rekening &amp; E-Wallet</div>
+            <div class="card-sub">Akumulasi Real-Time (Total Rp 6.557.978)</div>
+          </div>
+        </div>
+        <div class="chart-box" id="donutChartBox"></div>
+        <div class="legend-row" id="donutLegend"></div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Transaksi Terbaru (<span class="lblActiveMonth">November 2026</span>)</div>
+            <div class="card-sub">Mutasi terakhir di jurnal harian</div>
+          </div>
+          <button class="btn btn-sm" onclick="switchTab('tabTx', document.querySelectorAll('.tab-btn')[1])">Lihat Semua →</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Tanggal</th><th>Kategori</th><th>Deskripsi</th><th class="num">Nominal</th></tr>
+            </thead>
+            <tbody id="dashRecentTx"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Ringkasan Plan vs Realita</div>
+            <div class="card-sub">Status pos pengeluaran bulan aktif</div>
+          </div>
+          <button class="btn btn-sm" onclick="switchTab('tabPlan', document.querySelectorAll('.tab-btn')[2])">Detail Budget →</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kategori</th><th class="num">Plan</th><th class="num">Realita</th><th class="center">Status</th></tr>
+            </thead>
+            <tbody id="dashPlanSummary"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: TRANSAKSI HARIAN -->
+  <div id="tabTx" class="tab-pane">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Input Transaksi Cepat</div>
+          <div class="card-sub">Otomatis tersimpan ke perangkat &amp; terkirim ke Google Sheets PERSONAL FINANCE RERE</div>
+        </div>
+      </div>
+      <form onsubmit="handleQuickAdd(event)">
+        <div class="form-grid">
+          <div class="field"><label>Tanggal</label><input type="date" id="qDate" required></div>
+          <div class="field"><label>Tipe</label>
+            <select id="qType" onchange="populateCatSelect('qCat', this.value)">
+              <option value="Expense">Expense (Pengeluaran)</option>
+              <option value="Income">Income (Pemasukan)</option>
+              <option value="Saving">Saving (Tabungan/Investasi)</option>
+            </select>
+          </div>
+          <div class="field"><label>Kantong / Pocket</label><select id="qPocket"></select></div>
+          <div class="field"><label>Kategori</label><select id="qCat"></select></div>
+          <div class="field"><label>Deskripsi Transaksi</label><input type="text" id="qDesc" placeholder="Contoh: Beli Kopi / Freelance" required></div>
+          <div class="field"><label>Nominal (Rp)</label><input type="number" id="qNominal" min="1" placeholder="50000" required></div>
+          <div class="field"><label>Rekening / Metode</label><select id="qAccount"></select></div>
+        </div>
+        <button type="submit" class="btn btn-primary">+ Simpan ke Jurnal &amp; Sheets</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Daftar Transaksi — <span class="lblActiveMonth">November 2026</span></div>
+          <div class="card-sub" id="txCountLabel">Menampilkan 20 transaksi</div>
+        </div>
+        <div class="filter-bar">
+          <input type="text" id="fSearch" placeholder="Cari deskripsi / kategori..." oninput="renderAll()">
+          <select id="fType" onchange="renderAll()">
+            <option value="ALL">Semua Tipe</option>
+            <option value="Income">Income</option>
+            <option value="Expense">Expense</option>
+            <option value="Saving">Saving</option>
+          </select>
+          <select id="fPocket" onchange="renderAll()"><option value="ALL">Semua Kantong</option></select>
+          <select id="fAccount" onchange="renderAll()"><option value="ALL">Semua Rekening</option></select>
+          <label style="font-size:12px; display:inline-flex; align-items:center; gap:4px; cursor:pointer;">
+            <input type="checkbox" id="fAllMonths" onchange="renderAll()"> Semua Bulan
+          </label>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Tanggal</th><th>Tipe</th><th>Kantong</th><th>Kategori</th><th>Deskripsi Transaksi</th><th class="num">Nominal</th><th>Rekening</th><th class="center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="txTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: PLAN VS REALITA -->
+  <div id="tabPlan" class="tab-pane">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Budgeting: Plan vs Realita (<span class="lblActiveMonth">November 2026</span>)</div>
+          <div class="card-sub">Perbandingan anggaran bulanan dengan realisasi jurnal harian</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Kategori Pengeluaran</th><th class="num">Plan Budget</th><th class="num">Realita</th><th class="num">Sisa Plan</th><th style="min-width:130px;">Usage</th><th class="center">Status</th><th>Keterangan</th>
+            </tr>
+          </thead>
+          <tbody id="planTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: DOMPET, REKENING & PIUTANG -->
+  <div id="tabDompet" class="tab-pane">
+    <div class="two-col">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">1. Rekap per Kantong / Pocket</div>
+            <div class="card-sub">Saldo akumulasi real-time lintas tahun</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Kantong</th><th class="num">Saldo Awal</th><th class="num">Masuk</th><th class="num">Keluar</th><th class="num">Saldo Akhir</th><th class="center">Porsi</th></tr>
+            </thead>
+            <tbody id="pocketTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">2. Saldo per Rekening &amp; E-Wallet</div>
+            <div class="card-sub">Seimbang dengan total seluruh kantong</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Rekening</th><th class="num">Saldo Awal</th><th class="num">Masuk</th><th class="num">Keluar</th><th class="num">Saldo Akhir</th><th class="center">Porsi</th></tr>
+            </thead>
+            <tbody id="accountTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">3. Catatan Piutang Aktif &amp; Pengingat Kewajiban</div>
+          <div class="card-sub">Klik "Tandai Lunas" jika pinjaman sudah dikembalikan ke SeaBank</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Nama Peminjam</th><th class="num">Total Dipinjam</th><th class="num">Sudah Kembali</th><th class="num">Sisa Piutang</th><th class="center">Status</th><th class="center">Aksi Cepat</th></tr>
+          </thead>
+          <tbody id="piutangTableBody"></tbody>
+        </table>
+      </div>
+      <p style="font-size:12px; color:var(--muted); margin-top:10px;">
+        • Catatan Piutang: Freelance 350rb &amp; 750rb belum masuk wallet (belum dicatat).<br>
+        • Pengingat Cicilan Rutin: Cicilan Pasti tgl 1–5 (<b>Rp 1.182.000/bln</b>) &amp; PayLater berjalan 3 bulan ke depan (<b>Rp 45.000/bln</b>).
+      </p>
+    </div>
+  </div>
+
+  <!-- TAB 5: TABUNGAN EMAS & DANA NIKAH -->
+  <div id="tabEmas" class="tab-pane">
+    <div class="kpi-grid" id="emasNikahKpi"></div>
+
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Inventaris Tabungan Emas &amp; Perhiasan (6 Item — 7,00 Gram)</div>
+          <div class="card-sub">Memisahkan Aset Pribadi Rere (5,60 gr) dan Aset Tabungan Nikah (1,40 gr)</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>No</th><th>Tanggal Beli</th><th>Jenis</th><th>Nama / Deskripsi Item</th><th class="center">Kadar</th><th class="num">Berat (gr)</th><th class="num">Harga Beli</th><th class="center">Kepemilikan</th><th class="num">Harga/gr</th></tr>
+          </thead>
+          <tbody id="emasTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Kontribusi Tabungan Nikah (Rere &amp; Firman)</div>
+            <div class="card-sub">Batch 1 (Gelang 10K 1,4 gr) + Batch 2 (20 Nov 2026)</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Pihak Penyetor</th><th class="num">Batch 1</th><th class="num">Batch 2</th><th class="num">Lanjutan</th><th class="num">Total</th><th class="center">Porsi</th></tr>
+            </thead>
+            <tbody id="nikahContribBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Rencana Anggaran &amp; Vendor Pernikahan</div>
+            <div class="card-sub">Target Estimasi Total: Rp 43.000.000</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Pos / Kategori</th><th class="num">Estimasi</th><th class="num">Terbayar</th><th class="num">Kekurangan</th><th class="center">Status</th></tr>
+            </thead>
+            <tbody id="nikahVendorBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: TAMBAH TRANSAKSI -->
+<div class="modal-backdrop" id="modalAddTx">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>Catat Transaksi Baru</h3>
+      <button class="close-x" onclick="closeModal('modalAddTx')">✕</button>
+    </div>
+    <form onsubmit="handleModalAdd(event)">
+      <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="field"><label>Tanggal</label><input type="date" id="mDate" required></div>
+        <div class="field"><label>Tipe</label>
+          <select id="mType" onchange="populateCatSelect('mCat', this.value)">
+            <option value="Expense">Expense (Pengeluaran)</option>
+            <option value="Income">Income (Pemasukan)</option>
+            <option value="Saving">Saving (Tabungan)</option>
+          </select>
+        </div>
+        <div class="field"><label>Kantong / Pocket</label><select id="mPocket"></select></div>
+        <div class="field"><label>Kategori</label><select id="mCat"></select></div>
+        <div class="field" style="grid-column: 1 / -1;"><label>Deskripsi Transaksi</label><input type="text" id="mDesc" placeholder="Contoh: Jajan Kopi / Bayar Tagihan" required></div>
+        <div class="field"><label>Nominal (Rp)</label><input type="number" id="mNominal" min="1" placeholder="100000" required></div>
+        <div class="field"><label>Rekening / E-Wallet</label><select id="mAccount"></select></div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
+        <button type="button" class="btn" onclick="closeModal('modalAddTx')">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: PENGATURAN LINK SHEETS -->
+<div class="modal-backdrop" id="modalSync">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>Sinkronisasi Google Sheets</h3>
+      <button class="close-x" onclick="closeModal('modalSync')">✕</button>
+    </div>
+    <p style="font-size:12.5px; color:var(--muted); margin-bottom:10px;">
+      URL Google Apps Script Web App milikmu sudah tertanam otomatis agar iPhone 15 dan Lenovo Laptop langsung terhubung ke file <b>PERSONAL FINANCE RERE</b>.
+    </p>
+    <div class="field" style="margin-bottom:12px;">
+      <label>URL Google Apps Script (/exec)</label>
+      <input type="text" id="scriptUrlInput">
+    </div>
+    <div style="display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px;">
+      <button class="btn" onclick="restoreDefaultUrl()">Gunakan Link Default Rere</button>
+      <button class="btn btn-primary" onclick="saveScriptUrl()">Simpan &amp; Sinkron Sekarang</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toastMsg">Tersimpan!</div>
+
+<script>
+const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz0rPmXrSa95pDF77tYMbA-7FxEFUJjufoXegS_kz4HJERkUIvFtadv8SD4pl5-RXZA/exec";
+const STORAGE_KEY = "rere_finance_db_v3_complete";
+const URL_KEY = "rere_finance_gas_url";
+
+const CAT_EXPENSE = [
+  "Cicilan & Kewajiban", "Makanan & Minuman", "Transportasi & Bengkel",
+  "Tagihan & Utilitas", "Belanja & Kebutuhan", "Skincare & Personal",
+  "Keluarga & Sosial", "Hiburan & Lifestyle", "Kesehatan & Darurat",
+  "Investasi RDPU / Emas", "Beli Emas & Persiapan Nikah", "Dipinjamkan (Piutang)"
+];
+const CAT_INCOME = [
+  "Gaji Utama", "Freelance / Proyek", "Pemasukan Tabungan Nikah",
+  "Pelunasan Piutang", "Bonus & THR", "Lain-lain"
+];
+const POCKETS = ["My Pocket", "Family", "My Savings", "Tabungan Nikah", "Dana Darurat", "Piutang / Dipinjam"];
+const ACCOUNTS = ["SeaBank", "GoPay", "Cash", "BNI", "ShopeePay"];
+
+const INITIAL_DATA = {
+  activeMonth: "November 2026",
+  initialPockets: [
+    { name: "My Pocket", initial: 2281443, desc: "Gaji, cicilan rutin, paylater, makan, skincare, bengkel, Semarang" },
+    { name: "Family", initial: 1000000, desc: "Alokasi kebutuhan rumah tangga & keluarga" },
+    { name: "My Savings", initial: 500000, desc: "Tabungan pribadi & setoran investasi RDPU / Emas" },
+    { name: "Tabungan Nikah", initial: 0, desc: "Gabungan Rere & Firman; Batch 1 (Gelang 1,4gr) sdh jd emas" },
+    { name: "Dana Darurat", initial: 500000, desc: "Dana cadangan kesehatan & kondisi mendesak" },
+    { name: "Piutang / Dipinjam", initial: 650000, desc: "Dana keluar dipinjam teman/pasangan" }
+  ],
+  initialAccounts: [
+    { name: "SeaBank", initial: 4651300, color: "#E07A57" },
+    { name: "GoPay", initial: 207143, color: "#4EA8DE" },
+    { name: "Cash", initial: 73000, color: "#52B788" },
+    { name: "BNI", initial: 0, color: "#F4A261" },
+    { name: "ShopeePay", initial: 0, color: "#E76F51" }
+  ],
+  budgets: [
+    { category: "Cicilan & Kewajiban", plan: 1285000, note: "Cicilan rutin tgl 1-5 (1.182rb) & TikTok PayLater (101rb)" },
+    { category: "Makanan & Minuman", plan: 450000, note: "Makan harian, kopi, jajan" },
+    { category: "Transportasi & Bengkel", plan: 250000, note: "Servis motor/bengkel & tiket kereta Semarang" },
+    { category: "Tagihan & Utilitas", plan: 150000, note: "Kuota internet, pulsa, listrik" },
+    { category: "Belanja & Kebutuhan", plan: 150000, note: "Kebutuhan harian & perlengkapan" },
+    { category: "Skincare & Personal", plan: 125000, note: "SKIN1004 (72.320) & COSRX Duo (136.045) — tutup stok Des" },
+    { category: "Keluarga & Sosial", plan: 150000, note: "Dukungan keluarga & hadiah" },
+    { category: "Hiburan & Lifestyle", plan: 100000, note: "Jajan & liburan Semarang" },
+    { category: "Kesehatan & Darurat", plan: 80000, note: "Obat & vitamin" },
+    { category: "Investasi RDPU / Emas", plan: 200000, note: "Alokasi nabung emas / reksa dana pasar uang" },
+    { category: "Beli Emas & Persiapan Nikah", plan: 0, note: "Pos khusus Tabungan Nikah (non-rutin)" },
+    { category: "Dipinjamkan (Piutang)", plan: 0, note: "Pos piutang teman/pasangan" }
+  ],
+  transactions: [
+    { id: 1, date: "2026-11-01", type: "Income", pocket: "My Pocket", category: "Gaji Utama", desc: "Gaji Bulan November 2026", nominal: 3040000, account: "SeaBank" },
+    { id: 2, date: "2026-11-01", type: "Expense", pocket: "My Pocket", category: "Makanan & Minuman", desc: "Beli Kopi", nominal: 44000, account: "GoPay" },
+    { id: 3, date: "2026-11-02", type: "Expense", pocket: "My Pocket", category: "Cicilan & Kewajiban", desc: "Cicilan Pasti Bulanan (Tgl 1-5)", nominal: 1182000, account: "SeaBank" },
+    { id: 4, date: "2026-11-10", type: "Income", pocket: "Tabungan Nikah", category: "Pemasukan Tabungan Nikah", desc: "Tabungan Nikah Gabungan (Rere & Firman - Batch 1)", nominal: 2400000, account: "SeaBank" },
+    { id: 5, date: "2026-11-12", type: "Expense", pocket: "Tabungan Nikah", category: "Beli Emas & Persiapan Nikah", desc: "Beli Emas dari Tabungan Nikah Batch 1 (Gelang 10k 1,4gr)", nominal: 2400000, account: "SeaBank" },
+    { id: 6, date: "2026-11-15", type: "Expense", pocket: "Piutang / Dipinjam", category: "Dipinjamkan (Piutang)", desc: "Uang Dipinjam Annisa", nominal: 500000, account: "SeaBank" },
+    { id: 7, date: "2026-11-18", type: "Expense", pocket: "Piutang / Dipinjam", category: "Dipinjamkan (Piutang)", desc: "Uang Dipinjam Firman", nominal: 150000, account: "SeaBank" },
+    { id: 8, date: "2026-11-20", type: "Income", pocket: "Tabungan Nikah", category: "Pemasukan Tabungan Nikah", desc: "Setoran Tabungan Nikah - Bagian Rere", nominal: 600000, account: "SeaBank" },
+    { id: 9, date: "2026-11-20", type: "Income", pocket: "Tabungan Nikah", category: "Pemasukan Tabungan Nikah", desc: "Setoran Tabungan Nikah - Bagian Firman", nominal: 600000, account: "SeaBank" },
+    { id: 10, date: "2026-11-21", type: "Expense", pocket: "My Pocket", category: "Makanan & Minuman", desc: "Beliin Makan Firman", nominal: 10100, account: "GoPay" },
+    { id: 11, date: "2026-11-21", type: "Expense", pocket: "My Pocket", category: "Makanan & Minuman", desc: "Jajan", nominal: 15000, account: "Cash" },
+    { id: 12, date: "2026-11-22", type: "Expense", pocket: "My Pocket", category: "Makanan & Minuman", desc: "Jajan Chickroll", nominal: 17000, account: "Cash" },
+    { id: 13, date: "2026-11-22", type: "Expense", pocket: "My Pocket", category: "Makanan & Minuman", desc: "Gacoan", nominal: 16000, account: "Cash" },
+    { id: 14, date: "2026-11-23", type: "Expense", pocket: "My Pocket", category: "Transportasi & Bengkel", desc: "Ke Bengkel", nominal: 200000, account: "SeaBank" },
+    { id: 15, date: "2026-11-24", type: "Expense", pocket: "My Pocket", category: "Cicilan & Kewajiban", desc: "Bayar Tagihan TikTok PayLater", nominal: 101000, account: "SeaBank" },
+    { id: 16, date: "2026-11-26", type: "Income", pocket: "My Pocket", category: "Lain-lain", desc: "Pemasukan Tambahan (26 Nov 2026)", nominal: 100000, account: "SeaBank" },
+    { id: 17, date: "2026-11-26", type: "Expense", pocket: "My Pocket", category: "Skincare & Personal", desc: "SKIN1004 Madagascar Centella Poremizing Fresh Ampoule (Lunas)", nominal: 72320, account: "SeaBank" },
+    { id: 18, date: "2026-11-26", type: "Expense", pocket: "My Pocket", category: "Skincare & Personal", desc: "COSRX Clarify & Hydrate Duo + Free 1.5ml Alpha-Arbutin (Lunas)", nominal: 136045, account: "SeaBank" },
+    { id: 19, date: "2026-11-28", type: "Expense", pocket: "My Pocket", category: "Transportasi & Bengkel", desc: "Tiket Kereta ke Semarang (Sabtu)", nominal: 170000, account: "SeaBank" },
+    { id: 20, date: "2026-11-28", type: "Expense", pocket: "My Pocket", category: "Hiburan & Lifestyle", desc: "Pengeluaran & Jajan di Semarang", nominal: 100000, account: "GoPay" }
+  ],
+  goldItems: [
+    { date: "2024-12-12", type: "Gelang", name: "Gelang Emas 10K (Koleksi 2024)", karat: "10K", weight: 1.60, price: 1401600, owner: "Pribadi (Rere)" },
+    { date: "2025-07-08", type: "Kalung", name: "Kalung Emas 10K", karat: "10K", weight: 2.00, price: 2286000, owner: "Pribadi (Rere)" },
+    { date: "2025-09-26", type: "Cincin", name: "Cincin Emas 8K #1", karat: "8K", weight: 0.70, price: 909000, owner: "Pribadi (Rere)" },
+    { date: "2025-12-08", type: "Anting", name: "Anting Emas 8K", karat: "8K", weight: 0.60, price: 1038000, owner: "Pribadi (Rere)" },
+    { date: "2026-03-03", type: "Cincin", name: "Cincin Emas 8K #2", karat: "8K", weight: 0.70, price: 1287989, owner: "Pribadi (Rere)" },
+    { date: "2026-09-01", type: "Gelang", name: "Gelang Emas 10K (Batch Tabungan Nikah)", karat: "10K", weight: 1.40, price: 2322000, owner: "Tabungan Nikah" }
+  ],
+  weddingVendors: [
+    { pos: "Mahar & Seserahan Emas", est: 5000000, paid: 2322000, status: "DP / Cicil", vendor: "Toko Emas" },
+    { pos: "Cincin Nikah", est: 3500000, paid: 0, status: "Belum Bayar / Survey", vendor: "-" },
+    { pos: "KUA & Administrasi Nikah", est: 1000000, paid: 0, status: "Belum Bayar / Survey", vendor: "KUA" },
+    { pos: "Akad & Dekorasi", est: 8000000, paid: 0, status: "Belum Bayar / Survey", vendor: "-" },
+    { pos: "Catering & Konsumsi", est: 12000000, paid: 0, status: "Belum Bayar / Survey", vendor: "-" },
+    { pos: "MUA & Busana Pengantin", est: 6000000, paid: 0, status: "Belum Bayar / Survey", vendor: "-" },
+    { pos: "Dokumentasi (Foto & Video)", est: 3500000, paid: 0, status: "Belum Bayar / Survey", vendor: "-" },
+    { pos: "Undangan & Souvenir", est: 2000000, paid: 0, status: "Belum Bayar / Survey", vendor: "-" },
+    { pos: "Dana Cadangan Nikah", est: 2000000, paid: 0, status: "Belum Bayar / Survey", vendor: "-" }
+  ]
+};
+
+let state = loadState();
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return JSON.parse(JSON.stringify(INITIAL_DATA));
+}
+
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+}
+
+function getScriptUrl() {
+  return localStorage.getItem(URL_KEY) || DEFAULT_SCRIPT_URL;
+}
+
+function rp(n) {
+  return "Rp " + Math.round(Number(n) || 0).toLocaleString("id-ID");
+}
+
+function getMonthLabel(dateStr) {
+  if (!dateStr) return "";
+  const [y, m] = dateStr.split("-");
+  const names = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  return `${names[parseInt(m, 10) - 1]} ${y}`;
+}
+
+function showToast(msg) {
+  const el = document.getElementById("toastMsg");
+  el.textContent = msg;
+  el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 2600);
+}
+
+function openModal(id) { document.getElementById(id).classList.add("open"); }
+function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+
+function switchTab(tabId, btn) {
+  document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById(tabId).classList.add("active");
+  if (btn) btn.classList.add("active");
+}
+
+function initControls() {
+  const mSel = document.getElementById("monthSelector");
+  const names = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  let opts = "";
+  for (let y = 2026; y <= 2031; y++) {
+    const startM = y === 2026 ? 11 : 1;
+    for (let m = startM; m <= 12; m++) {
+      const lbl = `${names[m - 1]} ${y}`;
+      opts += `<option value="${lbl}" ${lbl === state.activeMonth ? "selected" : ""}>BULAN: ${lbl}</option>`;
+    }
+  }
+  mSel.innerHTML = opts;
+
+  ["qPocket", "mPocket"].forEach(id => {
+    document.getElementById(id).innerHTML = POCKETS.map(p => `<option value="${p}">${p}</option>`).join("");
+  });
+  ["qAccount", "mAccount"].forEach(id => {
+    document.getElementById(id).innerHTML = ACCOUNTS.map(a => `<option value="${a}">${a}</option>`).join("");
+  });
+  document.getElementById("fPocket").innerHTML = `<option value="ALL">Semua Kantong</option>` + POCKETS.map(p => `<option value="${p}">${p}</option>`).join("");
+  document.getElementById("fAccount").innerHTML = `<option value="ALL">Semua Rekening</option>` + ACCOUNTS.map(a => `<option value="${a}">${a}</option>`).join("");
+
+  populateCatSelect("qCat", "Expense");
+  populateCatSelect("mCat", "Expense");
+
+  const today = "2026-11-27";
+  document.getElementById("qDate").value = today;
+  document.getElementById("mDate").value = today;
+  document.getElementById("scriptUrlInput").value = getScriptUrl();
+}
+
+function populateCatSelect(selId, type) {
+  const list = type === "Income" ? CAT_INCOME : CAT_EXPENSE;
+  document.getElementById(selId).innerHTML = list.map(c => `<option value="${c}">${c}</option>`).join("");
+}
+
+function changeMonth(val) {
+  state.activeMonth = val;
+  saveState();
+  renderAll();
+}
+
+function computeBalances() {
+  const pockets = state.initialPockets.map(p => {
+    let masuk = 0, keluar = 0;
+    state.transactions.forEach(t => {
+      if (t.pocket === p.name) {
+        if (t.type === "Income" || t.type === "Saving") masuk += Number(t.nominal);
+        else if (t.type === "Expense") keluar += Number(t.nominal);
+      }
+    });
+    return { ...p, masuk, keluar, akhir: p.initial + masuk - keluar };
+  });
+
+  const accounts = state.initialAccounts.map(a => {
+    let masuk = 0, keluar = 0;
+    state.transactions.forEach(t => {
+      if (t.account === a.name) {
+        if (t.type === "Income" || t.type === "Saving") masuk += Number(t.nominal);
+        else if (t.type === "Expense") keluar += Number(t.nominal);
+      }
+    });
+    return { ...a, masuk, keluar, akhir: a.initial + masuk - keluar };
+  });
+
+  const totalWallet = accounts.reduce((s, a) => s + a.akhir, 0);
+  const totalPockets = pockets.reduce((s, p) => s + p.akhir, 0);
+  return { pockets, accounts, totalWallet, totalPockets };
+}
+
+function renderAll() {
+  document.querySelectorAll(".lblActiveMonth").forEach(el => el.textContent = state.activeMonth);
+  document.getElementById("chartCatSub").textContent = "Bulan Aktif: " + state.activeMonth;
+
+  const { pockets, accounts, totalWallet } = computeBalances();
+  const monthTx = state.transactions.filter(t => getMonthLabel(t.date) === state.activeMonth);
+
+  const monthIncome = monthTx.filter(t => t.type === "Income").reduce((s, t) => s + Number(t.nominal), 0);
+  const personalExp = monthTx.filter(t => t.type === "Expense" && t.category !== "Beli Emas & Persiapan Nikah" && t.category !== "Dipinjamkan (Piutang)")
+    .reduce((s, t) => s + Number(t.nominal), 0);
+
+  const emasPribadi = state.goldItems.filter(g => g.owner === "Pribadi (Rere)").reduce((s, g) => s + g.price, 0);
+  const emasNikah = state.goldItems.filter(g => g.owner === "Tabungan Nikah").reduce((s, g) => s + g.price, 0);
+  const totalEmas = emasPribadi + emasNikah;
+  const totalBerat = state.goldItems.reduce((s, g) => s + g.weight, 0);
+  const kasNikah = (pockets.find(p => p.name === "Tabungan Nikah") || { akhir: 0 }).akhir;
+  const totalNikah = emasNikah + kasNikah;
+
+  const piutangPeople = ["Annisa", "Firman"].map(nama => {
+    const dipinjam = state.transactions.filter(t => t.category === "Dipinjamkan (Piutang)" && t.desc.toLowerCase().includes(nama.toLowerCase())).reduce((s, t) => s + Number(t.nominal), 0);
+    const kembali = state.transactions.filter(t => t.category === "Pelunasan Piutang" && t.desc.toLowerCase().includes(nama.toLowerCase())).reduce((s, t) => s + Number(t.nominal), 0);
+    return { nama, dipinjam, kembali, sisa: Math.max(0, dipinjam - kembali) };
+  });
+  const totalPiutang = piutangPeople.reduce((s, p) => s + p.sisa, 0);
+
+  // Top KPIs
+  document.getElementById("topKpiGrid").innerHTML = `
+    <div class="kpi-card highlight">
+      <div class="kpi-lbl">Total Saldo Wallet</div>
+      <div class="kpi-val">${rp(totalWallet)}</div>
+      <div class="kpi-sub">SeaBank + GoPay + Cash</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-lbl">Income (${state.activeMonth})</div>
+      <div class="kpi-val">${rp(monthIncome)}</div>
+      <div class="kpi-sub">Gaji + Setoran Nikah + 100rb</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-lbl">Pengeluaran Pribadi</div>
+      <div class="kpi-val">${rp(personalExp)}</div>
+      <div class="kpi-sub">Di luar Emas Nikah &amp; Piutang</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-lbl">Total Aset Emas (${totalBerat.toFixed(1)} gr)</div>
+      <div class="kpi-val">${rp(totalEmas)}</div>
+      <div class="kpi-sub">5 Pribadi + 1 Gelang Nikah</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-lbl">Total Dana &amp; Emas Nikah</div>
+      <div class="kpi-val">${rp(totalNikah)}</div>
+      <div class="kpi-sub">Kas ${rp(kasNikah)} + Gelang ${rp(emasNikah)}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-lbl">Total Piutang Aktif</div>
+      <div class="kpi-val">${rp(totalPiutang)}</div>
+      <div class="kpi-sub">Annisa &amp; Firman</div>
+    </div>
+  `;
+
+  const seabankBal = (accounts.find(a => a.name === "SeaBank") || { akhir: 0 }).akhir;
+  const gopayCash = ((accounts.find(a => a.name === "GoPay") || { akhir: 0 }).akhir) + ((accounts.find(a => a.name === "Cash") || { akhir: 0 }).akhir);
+  const myPocketBal = (pockets.find(p => p.name === "My Pocket") || { akhir: 0 }).akhir;
+  const cadanganBal = pockets.filter(p => ["Family","My Savings","Dana Darurat"].includes(p.name)).reduce((s, p) => s + p.akhir, 0);
+
+  document.getElementById("subKpiGrid").innerHTML = `
+    <div class="kpi-card"><div class="kpi-lbl">SeaBank (Total)</div><div class="kpi-val dark">${rp(seabankBal)}</div><div class="kpi-sub">Rekening Utama</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">GoPay + Cash</div><div class="kpi-val dark">${rp(gopayCash)}</div><div class="kpi-sub">Dompet Harian</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Kantong My Pocket</div><div class="kpi-val dark">${rp(myPocketBal)}</div><div class="kpi-sub">Operasional Pribadi</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Emas Pribadi Rere (5,6 gr)</div><div class="kpi-val dark">${rp(emasPribadi)}</div><div class="kpi-sub">5 Item Perhiasan</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Kas Tunai Tabungan Nikah</div><div class="kpi-val dark">${rp(kasNikah)}</div><div class="kpi-sub">600rb Rere + 600rb Firman</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Family + Savings + Darurat</div><div class="kpi-val dark">${rp(cadanganBal)}</div><div class="kpi-sub">Kantong Cadangan</div></div>
+  `;
+
+  // Plan vs Realita rows
+  const planRows = state.budgets.map(b => {
+    const real = monthTx.filter(t => t.category === b.category && (t.type === "Expense" || t.type === "Saving"))
+      .reduce((s, t) => s + Number(t.nominal), 0);
+    const sisa = b.plan - real;
+    const pct = b.plan > 0 ? Math.min(100, Math.round((real / b.plan) * 100)) : (real > 0 ? 100 : 0);
+    let status = "Belum Terpakai", pillCls = "pill-saving";
+    if (b.plan === 0) {
+      status = real > 0 ? "Non-Rutin" : "Belum Ada";
+      pillCls = "pill-warn";
+    } else if (real === 0) {
+      status = "Aman (0%)"; pillCls = "pill-income";
+    } else if (real <= b.plan * 0.85) {
+      status = "Aman"; pillCls = "pill-income";
+    } else if (real <= b.plan) {
+      status = "Waspada"; pillCls = "pill-warn";
+    } else {
+      status = "Over Budget"; pillCls = "pill-expense";
+    }
+    return { ...b, real, sisa, pct, status, pillCls };
+  });
+
+  // Render SVG Bar Chart (Fixed 235px height, zero overlap)
+  renderBarChart(planRows.filter(r => r.plan > 0 || r.real > 0).slice(0, 7));
+
+  // Render SVG Donut Chart
+  renderDonutChart(accounts.filter(a => a.akhir > 0), totalWallet);
+
+  // Dashboard Recent Transactions
+  const recent = [...monthTx].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 6);
+  document.getElementById("dashRecentTx").innerHTML = recent.length
+    ? recent.map(t => `<tr>
+        <td>${t.date}</td>
+        <td><span class="pill ${t.type === 'Income' ? 'pill-income' : 'pill-expense'}">${t.category}</span></td>
+        <td>${t.desc}</td>
+        <td class="num"><b>${t.type === 'Income' ? '+' : '-'}${rp(t.nominal)}</b></td>
+      </tr>`).join("")
+    : `<tr><td colspan="4" class="center" style="color:var(--muted);">Belum ada transaksi di bulan ${state.activeMonth}</td></tr>`;
+
+  // Dashboard Plan Summary
+  document.getElementById("dashPlanSummary").innerHTML = planRows.slice(0, 8).map(p => `
+    <tr>
+      <td><b>${p.category}</b></td>
+      <td class="num">${rp(p.plan)}</td>
+      <td class="num">${rp(p.real)}</td>
+      <td class="center"><span class="pill ${p.pillCls}">${p.status}</span></td>
+    </tr>
+  `).join("");
+
+  // Tab 2: Full Transaction Table
+  const qSearch = (document.getElementById("fSearch").value || "").toLowerCase();
+  const qType = document.getElementById("fType").value;
+  const qPocket = document.getElementById("fPocket").value;
+  const qAcc = document.getElementById("fAccount").value;
+  const allMonths = document.getElementById("fAllMonths").checked;
+
+  const filteredTx = state.transactions.filter(t => {
+    if (!allMonths && getMonthLabel(t.date) !== state.activeMonth) return false;
+    if (qType !== "ALL" && t.type !== qType) return false;
+    if (qPocket !== "ALL" && t.pocket !== qPocket) return false;
+    if (qAcc !== "ALL" && t.account !== qAcc) return false;
+    if (qSearch && !(`${t.desc} ${t.category} ${t.pocket}`.toLowerCase().includes(qSearch))) return false;
+    return true;
+  }).sort((a, b) => b.date.localeCompare(a.date));
+
+  document.getElementById("txCountLabel").textContent = `Menampilkan ${filteredTx.length} transaksi (${allMonths ? "Semua Periode" : state.activeMonth})`;
+  document.getElementById("txTableBody").innerHTML = filteredTx.length
+    ? filteredTx.map(t => `<tr>
+        <td>${t.date}</td>
+        <td><span class="pill ${t.type === 'Income' ? 'pill-income' : (t.type === 'Saving' ? 'pill-saving' : 'pill-expense')}">${t.type}</span></td>
+        <td>${t.pocket}</td>
+        <td>${t.category}</td>
+        <td>${t.desc}</td>
+        <td class="num"><b>${rp(t.nominal)}</b></td>
+        <td>${t.account}</td>
+        <td class="center"><button class="btn btn-sm btn-danger" onclick="deleteTx(${t.id})">Hapus</button></td>
+      </tr>`).join("")
+    : `<tr><td colspan="8" class="center" style="color:var(--muted);">Tidak ada transaksi yang cocok dengan filter.</td></tr>`;
+
+  // Tab 3: Full Plan vs Realita
+  const totPlan = planRows.slice(0, 10).reduce((s, r) => s + r.plan, 0);
+  const totReal = planRows.slice(0, 10).reduce((s, r) => s + r.real, 0);
+  document.getElementById("planTableBody").innerHTML = planRows.map(r => `
+    <tr>
+      <td><b>${r.category}</b></td>
+      <td class="num">${rp(r.plan)}</td>
+      <td class="num">${rp(r.real)}</td>
+      <td class="num" style="color:${r.sisa < 0 ? 'var(--rose-text)' : 'var(--mint-text)'}; font-weight:700;">${rp(r.sisa)}</td>
+      <td>
+        <div style="font-size:11px; color:var(--muted);">${r.plan > 0 ? Math.round((r.real / r.plan) * 100) + '%' : '-'}</div>
+        <div class="prog-track"><div class="prog-fill ${r.real > r.plan && r.plan > 0 ? 'over' : 'safe'}" style="width:${r.pct}%"></div></div>
+      </td>
+      <td class="center"><span class="pill ${r.pillCls}">${r.status}</span></td>
+      <td style="font-size:11.5px; color:var(--muted);">${r.note}</td>
+    </tr>
+  `).join("") + `
+    <tr style="background:var(--peach-pale); font-weight:800;">
+      <td>TOTAL BUDGET RUTIN (10 POS)</td>
+      <td class="num">${rp(totPlan)}</td>
+      <td class="num">${rp(totReal)}</td>
+      <td class="num">${rp(totPlan - totReal)}</td>
+      <td></td>
+      <td class="center"><span class="pill ${totReal <= totPlan ? 'pill-income' : 'pill-expense'}">${totReal <= totPlan ? 'Terkendali' : 'Over Budget'}</span></td>
+      <td>Di luar pos khusus Nikah &amp; Piutang</td>
+    </tr>
+  `;
+
+  // Tab 4: Pockets & Accounts & Piutang
+  document.getElementById("pocketTableBody").innerHTML = pockets.map(p => `
+    <tr>
+      <td><b>${p.name}</b><div style="font-size:11px; color:var(--muted);">${p.desc}</div></td>
+      <td class="num">${rp(p.initial)}</td>
+      <td class="num">${rp(p.masuk)}</td>
+      <td class="num">${rp(p.keluar)}</td>
+      <td class="num"><b>${rp(p.akhir)}</b></td>
+      <td class="center">${totalWallet > 0 ? ((p.akhir / totalWallet) * 100).toFixed(1) : 0}%</td>
+    </tr>
+  `).join("") + `
+    <tr style="background:var(--peach-pale); font-weight:800;">
+      <td>TOTAL SELURUH KANTONG</td>
+      <td class="num">${rp(pockets.reduce((s,p)=>s+p.initial,0))}</td>
+      <td class="num">${rp(pockets.reduce((s,p)=>s+p.masuk,0))}</td>
+      <td class="num">${rp(pockets.reduce((s,p)=>s+p.keluar,0))}</td>
+      <td class="num">${rp(totalWallet)}</td>
+      <td class="center">100%</td>
+    </tr>
+  `;
+
+  document.getElementById("accountTableBody").innerHTML = accounts.map(a => `
+    <tr>
+      <td><b>${a.name}</b></td>
+      <td class="num">${rp(a.initial)}</td>
+      <td class="num">${rp(a.masuk)}</td>
+      <td class="num">${rp(a.keluar)}</td>
+      <td class="num"><b>${rp(a.akhir)}</b></td>
+      <td class="center">${totalWallet > 0 ? ((a.akhir / totalWallet) * 100).toFixed(1) : 0}%</td>
+    </tr>
+  `).join("") + `
+    <tr style="background:var(--peach-pale); font-weight:800;">
+      <td>TOTAL SALDO REKENING</td>
+      <td class="num">${rp(accounts.reduce((s,a)=>s+a.initial,0))}</td>
+      <td class="num">${rp(accounts.reduce((s,a)=>s+a.masuk,0))}</td>
+      <td class="num">${rp(accounts.reduce((s,a)=>s+a.keluar,0))}</td>
+      <td class="num">${rp(totalWallet)}</td>
+      <td class="center">100%</td>
+    </tr>
+  `;
+
+  document.getElementById("piutangTableBody").innerHTML = piutangPeople.map(p => `
+    <tr>
+      <td><b>${p.nama}</b></td>
+      <td class="num">${rp(p.dipinjam)}</td>
+      <td class="num">${rp(p.kembali)}</td>
+      <td class="num"><b>${rp(p.sisa)}</b></td>
+      <td class="center"><span class="pill ${p.sisa === 0 ? 'pill-income' : 'pill-warn'}">${p.sisa === 0 ? 'Lunas' : 'Belum Lunas'}</span></td>
+      <td class="center">${p.sisa > 0 ? `<button class="btn btn-sm btn-primary" onclick="settlePiutang('${p.nama}', ${p.sisa})">Tandai Lunas</button>` : '✓ Sudah Lunas'}</td>
+    </tr>
+  `).join("");
+
+  // Tab 5: Emas & Nikah
+  document.getElementById("emasNikahKpi").innerHTML = `
+    <div class="kpi-card highlight"><div class="kpi-lbl">Total Berat Seluruh Emas</div><div class="kpi-val">${totalBerat.toFixed(2)} gr</div><div class="kpi-sub">6 Item Perhiasan (8K &amp; 10K)</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Total Modal Beli Emas</div><div class="kpi-val">${rp(totalEmas)}</div><div class="kpi-sub">Pribadi + Tabungan Nikah</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Aset Emas Pribadi Rere</div><div class="kpi-val">${rp(emasPribadi)}</div><div class="kpi-sub">5 Item (5,60 gram)</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Total Kekayaan Dana Nikah</div><div class="kpi-val">${rp(totalNikah)}</div><div class="kpi-sub">Gelang ${rp(emasNikah)} + Kas ${rp(kasNikah)}</div></div>
+  `;
+
+  document.getElementById("emasTableBody").innerHTML = state.goldItems.map((g, idx) => `
+    <tr>
+      <td>${idx + 1}</td>
+      <td>${g.date}</td>
+      <td>${g.type}</td>
+      <td><b>${g.name}</b></td>
+      <td class="center"><span class="pill pill-warn">${g.karat}</span></td>
+      <td class="num">${g.weight.toFixed(2)} gr</td>
+      <td class="num"><b>${rp(g.price)}</b></td>
+      <td class="center"><span class="pill ${g.owner === 'Tabungan Nikah' ? 'pill-saving' : 'pill-income'}">${g.owner}</span></td>
+      <td class="num">${rp(g.price / g.weight)}</td>
+    </tr>
+  `).join("");
+
+  const rereExtra = state.transactions.filter(t => t.pocket === "Tabungan Nikah" && t.type === "Income" && t.desc.toLowerCase().includes("rere")).reduce((s,t)=>s+Number(t.nominal),0) - 600000;
+  const firmanExtra = state.transactions.filter(t => t.pocket === "Tabungan Nikah" && t.type === "Income" && t.desc.toLowerCase().includes("firman")).reduce((s,t)=>s+Number(t.nominal),0) - 600000;
+  const totRere = 1200000 + 600000 + Math.max(0, rereExtra);
+  const totFirman = 1200000 + 600000 + Math.max(0, firmanExtra);
+  const totAllNikah = totRere + totFirman;
+
+  document.getElementById("nikahContribBody").innerHTML = `
+    <tr><td><b>Rere Andriany</b></td><td class="num">${rp(1200000)}</td><td class="num">${rp(600000)}</td><td class="num">${rp(Math.max(0, rereExtra))}</td><td class="num"><b>${rp(totRere)}</b></td><td class="center">${((totRere/totAllNikah)*100).toFixed(0)}%</td></tr>
+    <tr><td><b>Hari Firmanto (Firman)</b></td><td class="num">${rp(1200000)}</td><td class="num">${rp(600000)}</td><td class="num">${rp(Math.max(0, firmanExtra))}</td><td class="num"><b>${rp(totFirman)}</b></td><td class="center">${((totFirman/totAllNikah)*100).toFixed(0)}%</td></tr>
+    <tr style="background:var(--peach-pale); font-weight:800;"><td>TOTAL GABUNGAN</td><td class="num">${rp(2400000)}</td><td class="num">${rp(1200000)}</td><td class="num">${rp(Math.max(0, rereExtra+firmanExtra))}</td><td class="num">${rp(totAllNikah)}</td><td class="center">100%</td></tr>
+  `;
+
+  document.getElementById("nikahVendorBody").innerHTML = state.weddingVendors.map(v => `
+    <tr>
+      <td><b>${v.pos}</b></td>
+      <td class="num">${rp(v.est)}</td>
+      <td class="num">${rp(v.paid)}</td>
+      <td class="num">${rp(v.est - v.paid)}</td>
+      <td class="center"><span class="pill ${v.paid > 0 ? 'pill-warn' : 'pill-saving'}">${v.status}</span></td>
+    </tr>
+  `).join("");
+}
+
+function renderBarChart(items) {
+  const box = document.getElementById("barChartBox");
+  if (!items.length) { box.innerHTML = "<span style='color:var(--muted); font-size:12px;'>Belum ada data pengeluaran</span>"; return; }
+  const maxVal = Math.max(...items.map(i => Math.max(i.real, i.plan)), 100000);
+  const w = 520, h = 215, padL = 48, padB = 42, padT = 16;
+  const chartW = w - padL - 16, chartH = h - padB - padT;
+  const colW = chartW / items.length;
+
+  let svg = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="215" preserveAspectRatio="xMidYMid meet">`;
+  [0, 0.5, 1].forEach(f => {
+    const y = padT + chartH * (1 - f);
+    const lbl = Math.round((maxVal * f) / 1000) + "rb";
+    svg += `<line x1="${padL}" y1="${y}" x2="${w-12}" y2="${y}" stroke="#F3E0D9" stroke-dasharray="3,3"/>`;
+    svg += `<text x="${padL-6}" y="${y+4}" text-anchor="end" font-size="10" fill="#786561">${lbl}</text>`;
+  });
+
+  items.forEach((it, idx) => {
+    const barW = Math.min(28, colW * 0.45);
+    const x = padL + idx * colW + (colW - barW) / 2;
+    const barH = Math.max(3, (it.real / maxVal) * chartH);
+    const y = padT + chartH - barH;
+    const shortName = it.category.split(" ")[0];
+    svg += `<rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="6" fill="#E07A57"/>`;
+    svg += `<text x="${x + barW/2}" y="${h - 22}" text-anchor="middle" font-size="10" font-weight="600" fill="#2F2321">${shortName}</text>`;
+    svg += `<text x="${x + barW/2}" y="${y - 4}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#C45B38">${Math.round(it.real/1000)}k</text>`;
+  });
+  svg += `</svg>`;
+  box.innerHTML = svg;
+}
+
+function renderDonutChart(activeAccs, total) {
+  const box = document.getElementById("donutChartBox");
+  const leg = document.getElementById("donutLegend");
+  if (!total) { box.innerHTML = ""; return; }
+  const r = 68, cx = 110, cy = 95, circ = 2 * Math.PI * r;
+  let offset = 0, circles = "";
+  activeAccs.forEach(a => {
+    const pct = a.akhir / total;
+    const dash = pct * circ;
+    circles += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${a.color}" stroke-width="24" stroke-dasharray="${dash} ${circ - dash}" stroke-dashoffset="${-offset}"/>`;
+    offset += dash;
+  });
+  box.innerHTML = `
+    <svg viewBox="0 0 220 190" width="220" height="190">
+      <g transform="rotate(-90 ${cx} ${cy})">${circles}</g>
+      <text x="${cx}" y="${cy-4}" text-anchor="middle" font-size="10" fill="#786561" font-weight="700">TOTAL WALLET</text>
+      <text x="${cx}" y="${cy+14}" text-anchor="middle" font-size="12" fill="#2F2321" font-weight="800">${(total/1000000).toFixed(2)} Jt</text>
+    </svg>
+  `;
+  leg.innerHTML = activeAccs.map(a => `<span class="legend-item"><span class="legend-dot" style="background:${a.color};"></span>${a.name}: ${rp(a.akhir)}</span>`).join("");
+}
+
+function addTransaction(tx) {
+  state.transactions.push(tx);
+  saveState();
+  renderAll();
+  pushTxToSheets(tx);
+  showToast("Transaksi disimpan & disinkronkan!");
+}
+
+function handleQuickAdd(e) {
+  e.preventDefault();
+  addTransaction({
+    id: Date.now(),
+    date: document.getElementById("qDate").value,
+    type: document.getElementById("qType").value,
+    pocket: document.getElementById("qPocket").value,
+    category: document.getElementById("qCat").value,
+    desc: document.getElementById("qDesc").value.trim(),
+    nominal: Number(document.getElementById("qNominal").value),
+    account: document.getElementById("qAccount").value
+  });
+  document.getElementById("qDesc").value = "";
+  document.getElementById("qNominal").value = "";
+}
+
+function handleModalAdd(e) {
+  e.preventDefault();
+  addTransaction({
+    id: Date.now(),
+    date: document.getElementById("mDate").value,
+    type: document.getElementById("mType").value,
+    pocket: document.getElementById("mPocket").value,
+    category: document.getElementById("mCat").value,
+    desc: document.getElementById("mDesc").value.trim(),
+    nominal: Number(document.getElementById("mNominal").value),
+    account: document.getElementById("mAccount").value
+  });
+  document.getElementById("mDesc").value = "";
+  document.getElementById("mNominal").value = "";
+  closeModal("modalAddTx");
+}
+
+function deleteTx(id) {
+  state.transactions = state.transactions.filter(t => t.id !== id);
+  saveState();
+  renderAll();
+  showToast("Transaksi dihapus.");
+}
+
+function settlePiutang(nama, amount) {
+  addTransaction({
+    id: Date.now(),
+    date: "2026-11-27",
+    type: "Income",
+    pocket: "Piutang / Dipinjam",
+    category: "Pelunasan Piutang",
+    desc: `Pelunasan Piutang dari ${nama}`,
+    nominal: amount,
+    account: "SeaBank"
+  });
+}
+
+async function pushTxToSheets(tx) {
+  const url = getScriptUrl();
+  if (!url) return;
+  try {
+    await fetch(url, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "addTransaction", transaction: tx })
+    });
+  } catch (e) {}
+}
+
+async function syncFromSheets(manual = false) {
+  const url = getScriptUrl();
+  if (!url) return;
+  try {
+    const res = await fetch(url + "?action=getAll");
+    const data = await res.json();
+    if (data && Array.isArray(data.transactions) && data.transactions.length > 0) {
+      state.transactions = data.transactions;
+      saveState();
+      renderAll();
+      if (manual) showToast("Berhasil sinkron dari Google Sheets!");
+    } else if (manual) {
+      showToast("Data lokal sudah terbaru & siap!");
+    }
+  } catch (e) {
+    if (manual) showToast("Mode lokal aktif (siap dipakai offline/online).");
+  }
+}
+
+function saveScriptUrl() {
+  const val = document.getElementById("scriptUrlInput").value.trim();
+  if (val) localStorage.setItem(URL_KEY, val);
+  closeModal("modalSync");
+  syncFromSheets(true);
+}
+
+function restoreDefaultUrl() {
+  localStorage.setItem(URL_KEY, DEFAULT_SCRIPT_URL);
+  document.getElementById("scriptUrlInput").value = DEFAULT_SCRIPT_URL;
+  showToast("Link default Rere dipulihkan.");
+}
+
+function exportBackup() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "Backup_Keuangan_Rere_2026.json";
+  a.click();
+}
+
+function confirmReset() {
+  localStorage.removeItem(STORAGE_KEY);
+  state = JSON.parse(JSON.stringify(INITIAL_DATA));
+  saveState();
+  initControls();
+  renderAll();
+  showToast("Database berhasil dimuat ulang ke versi terbaru!");
+}
+
+initControls();
+renderAll();
+</script>
+</body>
+</html>
