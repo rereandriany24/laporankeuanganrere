@@ -3,92 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Finance Rere - Laporan Keuangan</title>
+    <title>Personal & Family Finance — Rere</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #FFF5F2 0%, #FFF0F5 50%, #F0F8FF 100%);
-            --card-bg: rgba(255, 255, 255, 0.92);
-            --peach-primary: #FF9A8B;
-            --peach-soft: #FFD1C7;
-            --peach-bg: #FFF3F0;
-            --pink-primary: #FF8DA1;
+            --bg: #FFF7F4;
+            --card: #FFFFFF;
+            --peach-pale: #FFF1EB;
+            --peach-light: #FDE2D7;
+            --peach-soft: #F7B8A1;
+            --peach-main: #E07A57;
+            --peach-dark: #C45938;
             --pink-soft: #FFD6DE;
-            --blue-primary: #7EB6FF;
+            --pink-main: #E66A84;
             --blue-soft: #D6E8FF;
-            --blue-bg: #F2F7FF;
-            --mint-primary: #6BCB9F;
+            --blue-main: #4A89DC;
             --mint-soft: #D4F3E4;
-            --text-dark: #4A4453;
-            --text-muted: #847E8D;
-            --shadow: 0 10px 25px rgba(255, 154, 139, 0.14);
-            --radius: 20px;
+            --mint-main: #27855C;
+            --amber-soft: #FFF0CC;
+            --amber-main: #B87B14;
+            --text-dark: #3D3338;
+            --text-muted: #7E6F76;
+            --shadow-3d: 0 12px 26px rgba(224, 122, 87, 0.14), 0 3px 0 #F7B8A1;
+            --radius: 22px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Quicksand', sans-serif;
         }
 
         body {
-            background: var(--bg-gradient);
+            background: radial-gradient(circle at top left, #FFF1EB 0%, #FFF7F4 45%, #FFF0F5 100%);
             color: var(--text-dark);
+            font-family: Georgia, 'Times New Roman', serif;
             min-height: 100vh;
-            padding: 24px 16px 48px;
+            padding: 24px 16px 56px;
+            line-height: 1.5;
+        }
+
+        /* Judul dengan Font Doodle */
+        h1, h2, h3, .doodle-title, .stat-value, .tab-btn, th {
+            font-family: 'Fredoka', sans-serif;
+            letter-spacing: 0.3px;
+            font-weight: 600;
         }
 
         .container {
-            max-width: 1120px;
+            max-width: 1240px;
             margin: 0 auto;
         }
 
         /* Header */
         header {
-            background: var(--card-bg);
+            background: var(--card);
             border-radius: var(--radius);
             padding: 24px 28px;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-3d);
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             gap: 16px;
             margin-bottom: 24px;
-            border: 2px solid #FFE4DF;
+            border: 2px solid var(--peach-light);
         }
 
         .header-title h1 {
-            font-size: 1.65rem;
-            font-weight: 700;
-            color: #E87A6A;
+            font-size: 1.85rem;
+            font-weight: 600;
+            color: var(--peach-dark);
             display: flex;
             align-items: center;
             gap: 10px;
+            line-height: 1.15;
         }
 
         .header-title p {
             color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-top: 4px;
-            font-weight: 500;
+            font-size: 0.92rem;
+            margin-top: 6px;
         }
 
         .header-actions {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .btn {
             border: none;
-            padding: 10px 18px;
+            padding: 10px 16px;
             border-radius: 14px;
+            font-family: Georgia, 'Times New Roman', serif;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.2s ease;
             display: inline-flex;
@@ -97,201 +111,331 @@
         }
 
         .btn-peach {
-            background: linear-gradient(135deg, #FF9A8B, #FF8DA1);
+            background: linear-gradient(135deg, #F28B6B, #E07A57);
             color: white;
-            box-shadow: 0 4px 12px rgba(255, 141, 161, 0.3);
+            box-shadow: 0 4px 0 #B84D2E, 0 8px 16px rgba(224, 122, 87, 0.25);
         }
 
         .btn-peach:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(255, 141, 161, 0.4);
+        }
+
+        .btn-peach:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #B84D2E;
         }
 
         .btn-blue {
             background: var(--blue-soft);
-            color: #3D74C7;
-        }
-
-        .btn-blue:hover {
-            background: #C2DCFF;
+            color: #2E64B3;
+            box-shadow: 0 3px 0 #B4D3FA;
         }
 
         .btn-outline {
             background: #FFF;
             color: var(--text-dark);
-            border: 1.5px solid #FFD1C7;
+            border: 1.5px solid var(--peach-soft);
+            box-shadow: 0 3px 0 var(--peach-light);
         }
 
         .btn-outline:hover {
-            background: var(--peach-bg);
+            background: var(--peach-pale);
         }
 
-        /* Summary Cards */
-        .summary-grid {
+        /* Navigasi Tab */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 8px;
+            border-radius: 18px;
+            border: 1.5px solid var(--peach-light);
+            box-shadow: 0 6px 18px rgba(224, 122, 87, 0.08);
+        }
+
+        .tab-btn {
+            padding: 9px 18px;
+            border-radius: 13px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.96rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--peach-dark);
+            background: var(--peach-pale);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #F49375, #E07A57);
+            color: #FFF;
+            box-shadow: 0 4px 0 #B84D2E;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.25s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Kartu Ringkasan */
+        .summary-grid-6 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .summary-grid-4 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 18px;
-            margin-bottom: 24px;
+            gap: 16px;
+            margin-bottom: 22px;
         }
 
         .stat-card {
-            background: var(--card-bg);
+            background: var(--card);
             border-radius: var(--radius);
-            padding: 20px 22px;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-            border: 1.5px solid rgba(255, 255, 255, 0.8);
+            padding: 18px 20px;
+            border: 1.5px solid var(--peach-light);
+            box-shadow: 0 8px 20px rgba(224, 122, 87, 0.1), 0 4px 0 var(--peach-light);
+            transition: transform 0.2s ease;
         }
 
-        .stat-card.saldo { border-bottom: 4px solid var(--blue-primary); }
-        .stat-card.masuk { border-bottom: 4px solid var(--mint-primary); }
-        .stat-card.keluar { border-bottom: 4px solid var(--pink-primary); }
-        .stat-card.tabungan { border-bottom: 4px solid var(--peach-primary); }
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-card.blue { box-shadow: 0 8px 20px rgba(74, 137, 220, 0.1), 0 4px 0 var(--blue-soft); }
+        .stat-card.mint { box-shadow: 0 8px 20px rgba(39, 133, 92, 0.1), 0 4px 0 var(--mint-soft); }
+        .stat-card.pink { box-shadow: 0 8px 20px rgba(230, 106, 132, 0.1), 0 4px 0 var(--pink-soft); }
+        .stat-card.amber { box-shadow: 0 8px 20px rgba(184, 123, 20, 0.1), 0 4px 0 var(--amber-soft); }
 
         .stat-label {
-            font-size: 0.88rem;
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 0.76rem;
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-bottom: 6px;
         }
 
         .stat-value {
-            font-size: 1.55rem;
-            font-weight: 700;
+            font-size: 1.48rem;
+            font-weight: 600;
             color: var(--text-dark);
+            line-height: 1.2;
         }
 
         .stat-sub {
             font-size: 0.8rem;
             color: var(--text-muted);
             margin-top: 6px;
-            font-weight: 600;
         }
 
-        /* Main Grid */
-        .main-grid {
+        /* Panel & Grafik 3D */
+        .panel {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 22px 24px;
+            box-shadow: var(--shadow-3d);
+            border: 1.5px solid var(--peach-light);
+            margin-bottom: 22px;
+        }
+
+        .panel-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--peach-dark);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-bottom: 1.5px dashed var(--peach-soft);
+            padding-bottom: 8px;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 20px;
+            margin-bottom: 22px;
+        }
+
+        .chart-card {
+            background: linear-gradient(180deg, #FFFFFF 0%, #FFF9F6 100%);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1.5px solid var(--peach-light);
+            box-shadow: 0 10px 22px rgba(224, 122, 87, 0.12), 0 4px 0 var(--peach-soft);
+            perspective: 900px;
+        }
+
+        .chart-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--peach-dark);
+            margin-bottom: 4px;
+        }
+
+        .chart-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .chart-box {
+            position: relative;
+            height: 250px;
+            width: 100%;
+            filter: drop-shadow(0 10px 10px rgba(196, 89, 56, 0.16));
+        }
+
+        .two-col-grid {
             display: grid;
             grid-template-columns: 360px 1fr;
-            gap: 24px;
+            gap: 22px;
             align-items: start;
         }
 
-        @media (max-width: 900px) {
-            .main-grid {
+        @media (max-width: 960px) {
+            .two-col-grid {
                 grid-template-columns: 1fr;
             }
         }
 
-        .panel {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 24px;
-            box-shadow: var(--shadow);
-            border: 1.5px solid #FFEAE6;
+        /* Tabel */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1.5px solid var(--peach-light);
         }
 
-        .panel-title {
-            font-size: 1.15rem;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.88rem;
+            font-family: Georgia, 'Times New Roman', serif;
+        }
+
+        thead {
+            background: linear-gradient(90deg, var(--peach-pale), #FFE8F0);
+        }
+
+        th {
+            padding: 12px 14px;
+            font-size: 0.94rem;
+            font-weight: 600;
+            color: var(--peach-dark);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 11px 14px;
+            border-top: 1px solid #FFF0EB;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #FFF9F7;
+        }
+
+        tfoot tr {
+            background: var(--peach-pale);
             font-weight: 700;
-            margin-bottom: 18px;
-            color: var(--text-dark);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
         }
 
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 14px;
+        .num {
+            text-align: right;
+            white-space: nowrap;
         }
 
+        /* Badges */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            display: inline-block;
+            white-space: nowrap;
+            font-family: Georgia, 'Times New Roman', serif;
+        }
+
+        .badge-income, .badge-aman, .badge-lunas {
+            background: var(--mint-soft);
+            color: var(--mint-main);
+        }
+
+        .badge-expense, .badge-over {
+            background: var(--pink-soft);
+            color: #B83A52;
+        }
+
+        .badge-limit, .badge-dp {
+            background: var(--amber-soft);
+            color: var(--amber-main);
+        }
+
+        .badge-khusus, .badge-rek {
+            background: var(--blue-soft);
+            color: #2E64B3;
+        }
+
+        .badge-peach {
+            background: var(--peach-pale);
+            color: var(--peach-dark);
+            border: 1px solid var(--peach-soft);
+        }
+
+        .amt-in { color: var(--mint-main); font-weight: 700; }
+        .amt-out { color: #C9425B; font-weight: 700; }
+
+        /* Form & Filter */
+        .form-group { margin-bottom: 13px; }
         .form-group label {
             display: block;
-            font-size: 0.88rem;
+            font-size: 0.84rem;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             color: var(--text-dark);
         }
 
         .form-control {
             width: 100%;
-            padding: 11px 14px;
-            border-radius: 13px;
-            border: 1.5px solid #FAD5CE;
+            padding: 10px 13px;
+            border-radius: 12px;
+            border: 1.5px solid var(--peach-soft);
             background: #FFFDFC;
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 0.88rem;
             color: var(--text-dark);
             outline: none;
-            transition: border-color 0.2s;
         }
 
         .form-control:focus {
-            border-color: var(--pink-primary);
+            border-color: var(--peach-main);
             background: #FFF;
         }
 
-        .type-toggle {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 14px;
-        }
-
-        .type-btn {
-            padding: 10px;
-            border-radius: 13px;
-            border: 1.5px solid #FAD5CE;
-            background: #FFF;
-            font-weight: 700;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s;
-            color: var(--text-muted);
-        }
-
-        .type-btn.active.masuk {
-            background: var(--mint-soft);
-            border-color: var(--mint-primary);
-            color: #257A54;
-        }
-
-        .type-btn.active.keluar {
-            background: var(--pink-soft);
-            border-color: var(--pink-primary);
-            color: #B83A52;
-        }
-
-        /* Account Pills */
-        .account-bars {
-            margin-top: 22px;
-            padding-top: 18px;
-            border-top: 1.5px dashed #FAD5CE;
-        }
-
-        .account-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--blue-bg);
-            padding: 10px 14px;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
-
-        .account-item.peach {
-            background: var(--peach-bg);
-        }
-
-        /* Filter Bar & Table */
         .filter-bar {
             display: flex;
             flex-wrap: wrap;
@@ -302,76 +446,7 @@
         .filter-bar .form-control {
             width: auto;
             flex: 1;
-            min-width: 130px;
-            padding: 8px 12px;
-            font-size: 0.88rem;
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: 14px;
-            border: 1.5px solid #FFE4DF;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.92rem;
-        }
-
-        thead {
-            background: linear-gradient(90deg, #FFE4DF, #FFE8F0);
-        }
-
-        th {
-            padding: 13px 14px;
-            font-weight: 700;
-            color: var(--text-dark);
-            white-space: nowrap;
-        }
-
-        td {
-            padding: 12px 14px;
-            border-top: 1px solid #FFF0ED;
-            font-weight: 600;
-        }
-
-        tbody tr:hover {
-            background: #FFF9F8;
-        }
-
-        .badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            display: inline-block;
-        }
-
-        .badge-masuk {
-            background: var(--mint-soft);
-            color: #257A54;
-        }
-
-        .badge-keluar {
-            background: var(--pink-soft);
-            color: #B83A52;
-        }
-
-        .badge-rek {
-            background: var(--blue-soft);
-            color: #3D74C7;
-        }
-
-        .amount-masuk {
-            color: #257A54;
-            font-weight: 700;
-        }
-
-        .amount-keluar {
-            color: #C9425B;
-            font-weight: 700;
+            min-width: 140px;
         }
 
         .btn-del {
@@ -379,7 +454,7 @@
             border: none;
             color: #D48C98;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             padding: 4px 8px;
             border-radius: 8px;
         }
@@ -389,46 +464,30 @@
             color: #B83A52;
         }
 
-        /* Category Breakdown */
-        .cat-summary {
-            margin-top: 22px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 12px;
+        .progress-wrap {
+            width: 100%;
+            height: 8px;
+            background: #F3E8E5;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 6px;
         }
 
-        .cat-chip {
-            background: #FFFDFC;
-            border: 1.5px solid #FFE4DF;
-            border-radius: 14px;
-            padding: 12px 14px;
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #F7B8A1, #E07A57);
         }
 
-        .cat-chip-title {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            font-weight: 700;
-        }
-
-        .cat-chip-val {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-top: 4px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 36px 16px;
-            color: var(--text-muted);
-            font-weight: 600;
+        .progress-fill.over {
+            background: linear-gradient(90deg, #FF8DA1, #D94560);
         }
 
         @media print {
             body { background: white; padding: 0; }
             .no-print { display: none !important; }
-            .main-grid { grid-template-columns: 1fr; }
-            .panel, .stat-card, header { box-shadow: none; border: 1px solid #DDD; }
+            .tab-content { display: block !important; margin-bottom: 24px; }
+            .panel, .stat-card, header, .chart-card { box-shadow: none; border: 1px solid #DDD; }
         }
     </style>
 </head>
@@ -436,383 +495,1035 @@
     <div class="container">
         <header>
             <div class="header-title">
-                <h1>🌸 Personal Finance Rere</h1>
-                <p>Laporan & Pencatatan Arus Kas Pribadi • November 2026</p>
+                <h1>🍑 Personal & Family Finance Dashboard — Rere</h1>
+                <p>Multi-Tahun (2026–2031) dengan Diagram 3D • Terintegrasi Tabungan Emas (Rp 9,24 Juta / 7,0 gr) & Monitoring Nikah • Periode: <strong>November 2026</strong></p>
             </div>
             <div class="header-actions no-print">
                 <button class="btn btn-blue" onclick="exportCSV()">📥 Export CSV</button>
                 <button class="btn btn-outline" onclick="window.print()">🖨️ Cetak / PDF</button>
-                <button class="btn btn-outline" onclick="resetSampleData()">🔄 Reset Contoh</button>
+                <button class="btn btn-outline" onclick="resetExcelData()">🔄 Reset Data Excel</button>
             </div>
         </header>
 
-        <!-- Ringkasan Saldo -->
-        <section class="summary-grid">
-            <div class="stat-card saldo">
-                <div class="stat-label">Total Saldo Bersih <span>💳</span></div>
-                <div class="stat-value" id="totalSaldo">Rp 0</div>
-                <div class="stat-sub" id="periodeInfo">Semua transaksi tercatat</div>
+        <!-- Navigasi Tab -->
+        <nav class="nav-tabs no-print">
+            <button class="tab-btn active" onclick="switchTab('dashboard', this)">📊 Dashboard & Diagram 3D</button>
+            <button class="tab-btn" onclick="switchTab('transaksi', this)">📝 Transaksi Harian (28)</button>
+            <button class="tab-btn" onclick="switchTab('budget', this)">🎯 Plan vs Realita</button>
+            <button class="tab-btn" onclick="switchTab('dompet', this)">👛 Dompet & Kantong</button>
+            <button class="tab-btn" onclick="switchTab('emas', this)">✨ Tabungan Emas (7,0 gr)</button>
+            <button class="tab-btn" onclick="switchTab('nikah', this)">💍 Monitoring Nikah</button>
+        </nav>
+
+        <!-- ==================== TAB 1: DASHBOARD & DIAGRAM 3D ==================== -->
+        <section id="tab-dashboard" class="tab-content active">
+            <div class="summary-grid-6">
+                <div class="stat-card blue">
+                    <div class="stat-label">Total Saldo Wallet</div>
+                    <div class="stat-value">Rp 6.769.498</div>
+                    <div class="stat-sub">SeaBank + GoPay + Cash</div>
+                </div>
+                <div class="stat-card mint">
+                    <div class="stat-label">Income Bulan Ini</div>
+                    <div class="stat-value">Rp 3.358.000</div>
+                    <div class="stat-sub">Periode: November 2026</div>
+                </div>
+                <div class="stat-card pink">
+                    <div class="stat-label">Pengeluaran Pribadi</div>
+                    <div class="stat-value">Rp 2.069.945</div>
+                    <div class="stat-sub">Periode: November 2026</div>
+                </div>
+                <div class="stat-card amber">
+                    <div class="stat-label">Total Aset Emas (7,0 gr)</div>
+                    <div class="stat-value">Rp 9.244.589</div>
+                    <div class="stat-sub">6 Item (5,6 gr + 1,4 gr)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Dana & Emas Nikah</div>
+                    <div class="stat-value">Rp 3.522.000</div>
+                    <div class="stat-sub">Kas 1,2 jt + Gelang 2,322 jt</div>
+                </div>
+                <div class="stat-card pink">
+                    <div class="stat-label">Total Piutang Aktif</div>
+                    <div class="stat-value">Rp 650.000</div>
+                    <div class="stat-sub">Annisa 500 rb + Firman 150 rb</div>
+                </div>
             </div>
-            <div class="stat-card masuk">
-                <div class="stat-label">Total Pemasukan <span>📈</span></div>
-                <div class="stat-value" id="totalMasuk">Rp 0</div>
-                <div class="stat-sub" id="countMasuk">0 transaksi masuk</div>
+
+            <!-- DIAGRAM 3D INTERAKTIF -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-title">🥧 Diagram 3D Distribusi Kantong Wallet</div>
+                    <div class="chart-sub">Total Saldo Wallet: Rp 6.769.498 (Real-Time)</div>
+                    <div class="chart-box">
+                        <canvas id="chart3DKantong"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">📊 Diagram 3D Plan vs Realita Pengeluaran</div>
+                    <div class="chart-sub">Perbandingan Anggaran vs Realisasi November 2026</div>
+                    <div class="chart-box">
+                        <canvas id="chart3DBudget"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">✨ Diagram 3D Komposisi Aset & Kekayaan</div>
+                    <div class="chart-sub">Wallet, Emas Pribadi (5,6 gr), Emas Nikah (1,4 gr) & Piutang</div>
+                    <div class="chart-box">
+                        <canvas id="chart3DAset"></canvas>
+                    </div>
+                </div>
             </div>
-            <div class="stat-card keluar">
-                <div class="stat-label">Total Pengeluaran <span>🛍️</span></div>
-                <div class="stat-value" id="totalKeluar">Rp 0</div>
-                <div class="stat-sub" id="countKeluar">0 transaksi keluar</div>
+
+            <!-- Rincian Saldo Rekening, Kantong & Investasi Aktif -->
+            <div class="panel">
+                <div class="panel-title">🏦 Rincian Saldo Rekening, Kantong & Investasi Aktif</div>
+                <div class="summary-grid-6" style="margin-bottom: 0;">
+                    <div class="stat-card blue" style="background: #F7FAFF;">
+                        <div class="stat-label">SeaBank (Total)</div>
+                        <div class="stat-value">Rp 6.591.455</div>
+                        <div class="stat-sub">Porsi: 97,37%</div>
+                    </div>
+                    <div class="stat-card mint" style="background: #F4FBF8;">
+                        <div class="stat-label">GoPay + Cash</div>
+                        <div class="stat-value">Rp 178.043</div>
+                        <div class="stat-sub">GoPay 153.043 + Cash 25.000 (2,63%)</div>
+                    </div>
+                    <div class="stat-card" style="background: #FFF8F5;">
+                        <div class="stat-label">Kantong My Pocket</div>
+                        <div class="stat-value">Rp 3.569.498</div>
+                        <div class="stat-sub">Porsi Wallet: 52,73%</div>
+                    </div>
+                    <div class="stat-card amber" style="background: #FFFBF2;">
+                        <div class="stat-label">Emas Pribadi Rere (5,6 gr)</div>
+                        <div class="stat-value">Rp 6.922.589</div>
+                        <div class="stat-sub">5 Item Perhiasan</div>
+                    </div>
+                    <div class="stat-card pink" style="background: #FFF5F7;">
+                        <div class="stat-label">Tabungan Nikah (Kas Aktif)</div>
+                        <div class="stat-value">Rp 1.200.000</div>
+                        <div class="stat-sub">Porsi Wallet: 17,73%</div>
+                    </div>
+                    <div class="stat-card blue" style="background: #F7FAFF;">
+                        <div class="stat-label">Family + Savings + Darurat</div>
+                        <div class="stat-value">Rp 2.000.000</div>
+                        <div class="stat-sub">1 jt + 500 rb + 500 rb (29,54%)</div>
+                    </div>
+                </div>
             </div>
-            <div class="stat-card tabungan">
-                <div class="stat-label">Alokasi Tabungan & Investasi <span>✨</span></div>
-                <div class="stat-value" id="totalTabungan">Rp 0</div>
-                <div class="stat-sub" id="rasioTabungan">0% dari pemasukan</div>
+
+            <!-- Ringkasan Plan vs Realita & Catatan Piutang -->
+            <div class="two-col-grid" style="grid-template-columns: 1.5fr 1fr;">
+                <div class="panel">
+                    <div class="panel-title">📋 Ringkasan Cepat Plan vs Realita (November 2026)</div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Kategori</th>
+                                    <th class="num">Plan Budget</th>
+                                    <th class="num">Realita</th>
+                                    <th class="num">Sisa Plan</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashBudgetBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="panel">
+                        <div class="panel-title">💍 Ringkasan Dana Nikah & Tabungan Emas</div>
+                        <div class="form-group">
+                            <div class="stat-label">Emas Pribadi Rere (5,6 gr)</div>
+                            <div class="stat-value" style="font-size: 1.5rem;">Rp 6.922.589</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="stat-label">Emas Nikah (Gelang 10K 1,4 gr)</div>
+                            <div class="stat-value" style="font-size: 1.5rem;">Rp 2.322.000</div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <div class="stat-label">Kas Tunai Tabungan Nikah</div>
+                            <div class="stat-value" style="font-size: 1.5rem;">Rp 1.200.000</div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-title">📌 Catatan Piutang & Pengingat Cicilan</div>
+                        <div class="form-group">
+                            <div class="stat-label">Piutang Annisa (Belum Lunas)</div>
+                            <div class="stat-value" style="font-size: 1.45rem; color: #C9425B;">Rp 500.000</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="stat-label">Piutang Firman (Belum Lunas)</div>
+                            <div class="stat-value" style="font-size: 1.45rem; color: #C9425B;">Rp 150.000</div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <div class="stat-label">Cicilan Pasti (Tgl 1–5)</div>
+                            <div class="stat-value" style="font-size: 1.45rem; color: var(--peach-dark);">Rp 1.182.000</div>
+                            <div class="stat-sub">Catatan: Freelance 350 rb & 750 rb belum masuk wallet (belum dicatat)</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <div class="main-grid">
-            <!-- Panel Input -->
-            <aside class="panel no-print">
-                <div class="panel-title">✍️ Catat Transaksi Baru</div>
-                <form id="txForm">
-                    <div class="type-toggle">
-                        <div class="type-btn active keluar" id="btnKeluar" onclick="setJenis('Pengeluaran')">Pengeluaran</div>
-                        <div class="type-btn masuk" id="btnMasuk" onclick="setJenis('Pemasukan')">Pemasukan</div>
-                    </div>
-                    <input type="hidden" id="txJenis" value="Pengeluaran">
+        <!-- ==================== TAB 2: TRANSAKSI HARIAN ==================== -->
+        <section id="tab-transaksi" class="tab-content">
+            <div class="two-col-grid">
+                <aside class="panel no-print">
+                    <div class="panel-title">✍️ Input Transaksi Harian</div>
+                    <form id="txForm">
+                        <div class="form-group">
+                            <label>Tanggal</label>
+                            <input type="date" id="txTanggal" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipe Transaksi</label>
+                            <select id="txTipe" class="form-control" onchange="updateKategoriOptions()" required>
+                                <option value="Expense">Expense</option>
+                                <option value="Income">Income</option>
+                                <option value="Saving">Saving</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Kantong / Pocket</label>
+                            <select id="txKantong" class="form-control" required>
+                                <option value="My Pocket">My Pocket</option>
+                                <option value="Family">Family</option>
+                                <option value="My Savings">My Savings</option>
+                                <option value="Tabungan Nikah">Tabungan Nikah</option>
+                                <option value="Dana Darurat">Dana Darurat</option>
+                                <option value="Piutang / Dipinjam">Piutang / Dipinjam</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Kategori</label>
+                            <select id="txKategori" class="form-control" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Deskripsi Transaksi</label>
+                            <input type="text" id="txDeskripsi" class="form-control" placeholder="Contoh: Beli Kopi" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nominal (Rp)</label>
+                            <input type="number" id="txNominal" class="form-control" placeholder="Contoh: 44000" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Rekening / Metode</label>
+                            <select id="txRekening" class="form-control" required>
+                                <option value="SeaBank">SeaBank</option>
+                                <option value="GoPay">GoPay</option>
+                                <option value="Cash">Cash</option>
+                                <option value="BNI">BNI</option>
+                                <option value="ShopeePay">ShopeePay</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-peach" style="width: 100%; justify-content: center;">➕ Tambah ke Jurnal</button>
+                    </form>
+                </aside>
 
-                    <div class="form-group">
-                        <label for="txTanggal">Tanggal</label>
-                        <input type="date" id="txTanggal" class="form-control" required>
+                <main class="panel">
+                    <div class="panel-title">
+                        <span>📒 Jurnal Transaksi Harian (November 2026)</span>
+                        <span id="txCountBadge" class="badge badge-peach">28 Transaksi</span>
                     </div>
 
-                    <div class="form-group">
-                        <label for="txKategori">Kategori</label>
-                        <select id="txKategori" class="form-control" required>
-                            <!-- Diisi otomatis via JS -->
+                    <div class="filter-bar no-print">
+                        <select id="filterTipe" class="form-control" onchange="renderTransaksi()">
+                            <option value="ALL">Semua Tipe</option>
+                            <option value="Income">Income</option>
+                            <option value="Expense">Expense</option>
+                            <option value="Saving">Saving</option>
                         </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="txAkun">Rekening / Dompet</label>
-                        <select id="txAkun" class="form-control" required>
-                            <option value="BNI">BNI</option>
+                        <select id="filterKantong" class="form-control" onchange="renderTransaksi()">
+                            <option value="ALL">Semua Kantong</option>
+                            <option value="My Pocket">My Pocket</option>
+                            <option value="Tabungan Nikah">Tabungan Nikah</option>
+                            <option value="Piutang / Dipinjam">Piutang / Dipinjam</option>
+                            <option value="Family">Family</option>
+                            <option value="My Savings">My Savings</option>
+                            <option value="Dana Darurat">Dana Darurat</option>
+                        </select>
+                        <select id="filterRek" class="form-control" onchange="renderTransaksi()">
+                            <option value="ALL">Semua Rekening</option>
                             <option value="SeaBank">SeaBank</option>
-                            <option value="Bibit RDPU">Bibit RDPU</option>
-                            <option value="ShopeePay / E-Wallet">ShopeePay / E-Wallet</option>
-                            <option value="Cash">Cash / Tunai</option>
+                            <option value="GoPay">GoPay</option>
+                            <option value="Cash">Cash</option>
+                            <option value="BNI">BNI</option>
+                            <option value="ShopeePay">ShopeePay</option>
                         </select>
+                        <input type="text" id="filterSearch" class="form-control" placeholder="Cari deskripsi / kategori..." oninput="renderTransaksi()">
                     </div>
 
-                    <div class="form-group">
-                        <label for="txNominal">Nominal (Rp)</label>
-                        <input type="number" id="txNominal" class="form-control" placeholder="Contoh: 150000" min="1" required>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Tipe</th>
+                                    <th>Kantong</th>
+                                    <th>Kategori</th>
+                                    <th>Deskripsi Transaksi</th>
+                                    <th>Rekening</th>
+                                    <th class="num">Nominal (Rp)</th>
+                                    <th>Status Budget</th>
+                                    <th class="no-print">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="txTableBody"></tbody>
+                        </table>
                     </div>
+                </main>
+            </div>
+        </section>
 
-                    <div class="form-group">
-                        <label for="txCatatan">Keterangan</label>
-                        <input type="text" id="txCatatan" class="form-control" placeholder="Contoh: Tiket KAI Purwokerto - Semarang" required>
-                    </div>
-
-                    <button type="submit" class="btn btn-peach" style="width: 100%; justify-content: center; margin-top: 6px;">
-                        ➕ Simpan ke Laporan
-                    </button>
-                </form>
-
-                <!-- Saldo Per Akun -->
-                <div class="account-bars">
-                    <div class="panel-title" style="font-size: 1rem; margin-bottom: 12px;">🏦 Saldo per Rekening</div>
-                    <div id="accountList"></div>
-                </div>
-            </aside>
-
-            <!-- Panel Tabel & Analisis -->
-            <main class="panel">
+        <!-- ==================== TAB 3: PLAN VS REALITA ==================== -->
+        <section id="tab-budget" class="tab-content">
+            <div class="panel">
                 <div class="panel-title">
-                    <span>📋 Riwayat & Rincian Transaksi</span>
-                    <span id="filteredCount" style="font-size: 0.85rem; color: var(--text-muted);">0 data</span>
+                    <span>🎯 Budgeting: Plan vs Realita Pengeluaran & Investasi Bulanan (November 2026)</span>
+                    <span class="badge badge-peach">Target Income: Rp 3.040.000</span>
                 </div>
-
-                <div class="filter-bar no-print">
-                    <input type="month" id="filterBulan" class="form-control" onchange="renderAll()">
-                    <select id="filterJenis" class="form-control" onchange="renderAll()">
-                        <option value="ALL">Semua Jenis</option>
-                        <option value="Pemasukan">Pemasukan</option>
-                        <option value="Pengeluaran">Pengeluaran</option>
-                    </select>
-                    <select id="filterAkun" class="form-control" onchange="renderAll()">
-                        <option value="ALL">Semua Rekening</option>
-                        <option value="BNI">BNI</option>
-                        <option value="SeaBank">SeaBank</option>
-                        <option value="Bibit RDPU">Bibit RDPU</option>
-                        <option value="ShopeePay / E-Wallet">ShopeePay / E-Wallet</option>
-                        <option value="Cash">Cash / Tunai</option>
-                    </select>
-                    <input type="text" id="filterCari" class="form-control" placeholder="Cari keterangan..." oninput="renderAll()">
-                </div>
-
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
-                                <th>Tanggal</th>
-                                <th>Jenis</th>
-                                <th>Kategori</th>
+                                <th>Kategori Pengeluaran</th>
+                                <th class="num">Plan Budget (Rp)</th>
+                                <th class="num">Realita Bulan Ini (Rp)</th>
+                                <th class="num">Sisa Plan (Rp)</th>
+                                <th>Persentase Usage</th>
+                                <th>Status Budget</th>
                                 <th>Keterangan</th>
-                                <th>Rekening</th>
-                                <th style="text-align: right;">Nominal</th>
-                                <th class="no-print" style="text-align: center;">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="txTableBody"></tbody>
+                        <tbody id="fullBudgetBody"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td>TOTAL BUDGET RUTIN BULANAN</td>
+                                <td class="num">Rp 2.940.000</td>
+                                <td class="num">Rp 5.119.945</td>
+                                <td class="num amt-out">-Rp 2.179.945</td>
+                                <td><strong>174,1%</strong></td>
+                                <td><span class="badge badge-over">OVER TOTAL</span></td>
+                                <td>Defisit Anggaran (termasuk pos khusus nikah & piutang)</td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
+            </div>
+        </section>
 
-                <!-- Ringkasan Kategori Pengeluaran -->
-                <div style="margin-top: 24px;">
-                    <div class="panel-title" style="font-size: 1rem; margin-bottom: 10px;">📊 Ringkasan Pengeluaran per Kategori</div>
-                    <div class="cat-summary" id="categorySummary"></div>
+        <!-- ==================== TAB 4: DOMPET & KANTONG ==================== -->
+        <section id="tab-dompet" class="tab-content">
+            <div class="panel">
+                <div class="panel-title">1. Rekap per Kantong / Pocket (Saldo Akumulasi Real-Time)</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nama Kantong / Pocket</th>
+                                <th class="num">Saldo Awal (Rp)</th>
+                                <th class="num">Total Pemasukan / Setor</th>
+                                <th class="num">Total Pengeluaran</th>
+                                <th class="num">Saldo Akhir Saat Ini</th>
+                                <th class="num">Porsi Aset (%)</th>
+                                <th>Fungsi Kantong</th>
+                            </tr>
+                        </thead>
+                        <tbody id="kantongBody"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td>TOTAL SELURUH KANTONG</td>
+                                <td class="num">Rp 4.931.443</td>
+                                <td class="num">Rp 6.958.000</td>
+                                <td class="num">Rp 5.119.945</td>
+                                <td class="num">Rp 6.769.498</td>
+                                <td class="num">100,0%</td>
+                                <td>Terus terakumulasi otomatis lintas tahun (seimbang dengan Rekening)</td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
-            </main>
-        </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">2. Saldo per Rekening & E-Wallet (Akumulasi Real-Time)</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rekening / E-Wallet</th>
+                                <th class="num">Saldo Awal (Rp)</th>
+                                <th class="num">Uang Masuk</th>
+                                <th class="num">Uang Keluar</th>
+                                <th class="num">Saldo Akhir Saat Ini</th>
+                                <th class="num">Porsi (%)</th>
+                                <th>Catatan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rekeningBody"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td>TOTAL SALDO REKENING</td>
+                                <td class="num">Rp 4.931.443</td>
+                                <td class="num">Rp 6.958.000</td>
+                                <td class="num">Rp 5.119.945</td>
+                                <td class="num">Rp 6.769.498</td>
+                                <td class="num">100,0%</td>
+                                <td>Seimbang dengan Total Seluruh Kantong</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">3. Catatan Piutang / Uang Dipinjam (Belum Kembali ke Wallet)</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nama Peminjam</th>
+                                <th class="num">Total Dipinjam (Rp)</th>
+                                <th class="num">Sudah Dikembalikan</th>
+                                <th class="num">Sisa Piutang (Rp)</th>
+                                <th>Status</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Annisa</strong></td>
+                                <td class="num">Rp 500.000</td>
+                                <td class="num">Rp 0</td>
+                                <td class="num amt-out">Rp 500.000</td>
+                                <td><span class="badge badge-over">BELUM LUNAS</span></td>
+                                <td>Jika Annisa bayar, catat Income kategori 'Pelunasan Piutang' dgn nama Annisa</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Firman</strong></td>
+                                <td class="num">Rp 150.000</td>
+                                <td class="num">Rp 0</td>
+                                <td class="num amt-out">Rp 150.000</td>
+                                <td><span class="badge badge-over">BELUM LUNAS</span></td>
+                                <td>Jika Firman bayar, catat Income kategori 'Pelunasan Piutang' dgn nama Firman</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>TOTAL PIUTANG AKTIF</td>
+                                <td class="num">Rp 650.000</td>
+                                <td class="num">Rp 0</td>
+                                <td class="num">Rp 650.000</td>
+                                <td><span class="badge badge-limit">MENUNGGU</span></td>
+                                <td>Catatan: Freelance 350 rb & 750 rb belum masuk wallet (belum dicatat)</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: TABUNGAN EMAS ==================== -->
+        <section id="tab-emas" class="tab-content">
+            <div class="summary-grid-4">
+                <div class="stat-card amber">
+                    <div class="stat-label">Total Berat Seluruh Emas</div>
+                    <div class="stat-value">7,0 gram</div>
+                    <div class="stat-sub">Total 6 Item Perhiasan</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Nilai Beli (Semua)</div>
+                    <div class="stat-value">Rp 9.244.589</div>
+                    <div class="stat-sub">Rata-rata Rp 1.320.656 / gr</div>
+                </div>
+                <div class="stat-card mint">
+                    <div class="stat-label">Aset Emas Pribadi (Rere)</div>
+                    <div class="stat-value">Rp 6.922.589</div>
+                    <div class="stat-sub">5,6 gram (5 Item)</div>
+                </div>
+                <div class="stat-card pink">
+                    <div class="stat-label">Aset Emas Tabungan Nikah</div>
+                    <div class="stat-value">Rp 2.322.000</div>
+                    <div class="stat-sub">1,4 gram (Gelang 10K)</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">✨ Daftar Inventaris Emas & Perhiasan (2 Cincin, 2 Gelang, 1 Kalung, 1 Anting)</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Tanggal Beli</th>
+                                <th>Jenis Perhiasan</th>
+                                <th>Nama / Deskripsi Item</th>
+                                <th>Kadar</th>
+                                <th class="num">Berat (Gram)</th>
+                                <th class="num">Harga Beli (Rp)</th>
+                                <th>Kepemilikan / Pos</th>
+                                <th class="num">Harga per Gram (Rp)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="emasBody"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3">TOTAL ASET EMAS</td>
+                                <td>6 Item Perhiasan / Emas</td>
+                                <td>-</td>
+                                <td class="num">7,00 gr</td>
+                                <td class="num">Rp 9.244.589</td>
+                                <td>Semua Kepemilikan</td>
+                                <td class="num">Rp 1.320.656</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 6: MONITORING NIKAH ==================== -->
+        <section id="tab-nikah" class="tab-content">
+            <div class="summary-grid-4">
+                <div class="stat-card blue">
+                    <div class="stat-label">Total Setoran Uang Nikah</div>
+                    <div class="stat-value">Rp 3.600.000</div>
+                    <div class="stat-sub">Akumulasi Rere & Firman (Batch 1 & 2)</div>
+                </div>
+                <div class="stat-card amber">
+                    <div class="stat-label">Aset Emas Nikah (Terbeli)</div>
+                    <div class="stat-value">Rp 2.322.000</div>
+                    <div class="stat-sub">Gelang 10K (1,40 gr)</div>
+                </div>
+                <div class="stat-card mint">
+                    <div class="stat-label">Saldo Uang Tunai Nikah</div>
+                    <div class="stat-value">Rp 1.200.000</div>
+                    <div class="stat-sub">600 rb Rere + 600 rb Firman</div>
+                </div>
+                <div class="stat-card pink">
+                    <div class="stat-label">Total Kekayaan Dana Nikah</div>
+                    <div class="stat-value">Rp 3.522.000</div>
+                    <div class="stat-sub">Emas Nikah + Kas Aktif</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">1. Rekap Kontribusi Setoran Tabungan Nikah (Rere vs Firman)</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Pihak Penyetor</th>
+                                <th class="num">Batch 1 (Sudah Emas)</th>
+                                <th class="num">Batch 2 (20 Nov 2026)</th>
+                                <th class="num">Setoran Lanjutan</th>
+                                <th class="num">Total Kontribusi</th>
+                                <th class="num">Porsi (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Rere Andriany</strong></td>
+                                <td class="num">Rp 1.200.000</td>
+                                <td class="num">Rp 600.000</td>
+                                <td class="num">Rp 2.400.000</td>
+                                <td class="num"><strong>Rp 4.200.000</strong></td>
+                                <td class="num">50,0%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hari Firmanto (Firman)</strong></td>
+                                <td class="num">Rp 1.200.000</td>
+                                <td class="num">Rp 600.000</td>
+                                <td class="num">Rp 2.400.000</td>
+                                <td class="num"><strong>Rp 4.200.000</strong></td>
+                                <td class="num">50,0%</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>TOTAL GABUNGAN</td>
+                                <td class="num">Rp 2.400.000</td>
+                                <td class="num">Rp 1.200.000</td>
+                                <td class="num">Rp 4.800.000</td>
+                                <td class="num">Rp 8.400.000</td>
+                                <td class="num">100,0%</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">
+                    <span>2. Rencana Anggaran & Checklist Vendor Pernikahan</span>
+                    <span class="badge badge-dp">Progress Dana: 3,69% (Rp 2.322.000 / Rp 63.000.000)</span>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Pos / Kategori Nikah</th>
+                                <th class="num">Estimasi Budget (Rp)</th>
+                                <th class="num">Sudah Dibayar (Rp)</th>
+                                <th class="num">Sisa Kekurangan (Rp)</th>
+                                <th>Status</th>
+                                <th>Vendor / Nama</th>
+                                <th>Kontak / Catatan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vendorNikahBody"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td>TOTAL ESTIMASI BIAYA NIKAH</td>
+                                <td class="num">Rp 63.000.000</td>
+                                <td class="num">Rp 2.322.000</td>
+                                <td class="num">Rp 60.678.000</td>
+                                <td><span class="badge badge-dp">3,69%</span></td>
+                                <td>Progress Dana</td>
+                                <td>Sesuai target anggaran pernikahan Rere & Firman</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script>
-        const STORAGE_KEY = 'personal_finance_rere_v1';
+        const STORAGE_KEY = 'rere_finance_excel_exact_v3';
 
-        const kategoriMap = {
-            Pemasukan: [
-                'Gaji Utama (PT ARM)',
-                'Fee Asisten Penelitian',
-                'Bonus / THR',
-                'Imbal Hasil Investasi',
-                'Pemasukan Lainnya'
-            ],
-            Pengeluaran: [
-                'Keluarga (Ibu, Bapak, Adik)',
-                'Tabungan Nikah',
-                'Investasi & Emas',
-                'Makan & Minum',
-                'Transportasi & Kereta (KAI)',
-                'Akomodasi & Liburan',
-                'Skincare, Kosmetik & Pribadi',
-                'Tagihan & Cicilan',
-                'Kebutuhan Harian (Alfamart/Belanja)',
-                'Lain-lain'
-            ]
-        };
-
-        const sampleTransactions = [
-            { id: 1, tanggal: '2026-11-01', jenis: 'Pemasukan', kategori: 'Gaji Utama (PT ARM)', akun: 'BNI', nominal: 4500000, catatan: 'Gaji bulanan Admin & Data Coordinator' },
-            { id: 2, tanggal: '2026-11-02', jenis: 'Pengeluaran', kategori: 'Keluarga (Ibu, Bapak, Adik)', akun: 'BNI', nominal: 1200000, catatan: 'Transfer rutin bulanan keluarga' },
-            { id: 3, tanggal: '2026-11-03', jenis: 'Pengeluaran', kategori: 'Tabungan Nikah', akun: 'SeaBank', nominal: 1000000, catatan: 'Setoran tabungan masa depan' },
-            { id: 4, tanggal: '2026-11-05', jenis: 'Pengeluaran', kategori: 'Investasi & Emas', akun: 'Bibit RDPU', nominal: 500000, catatan: 'Top up reksa dana pasar uang' },
-            { id: 5, tanggal: '2026-11-10', jenis: 'Pemasukan', kategori: 'Fee Asisten Penelitian', akun: 'SeaBank', nominal: 850000, catatan: 'Olah data SPSS & berkas LKD/IKKR' },
-            { id: 6, tanggal: '2026-11-14', jenis: 'Pengeluaran', kategori: 'Kebutuhan Harian (Alfamart/Belanja)', akun: 'ShopeePay / E-Wallet', nominal: 185000, catatan: 'Belanja kebutuhan bulanan & skincare' },
-            { id: 7, tanggal: '2026-11-20', jenis: 'Pengeluaran', kategori: 'Transportasi & Kereta (KAI)', akun: 'BNI', nominal: 240000, catatan: 'Tiket KAI Ekonomi Purwokerto - Semarang PP' },
-            { id: 8, tanggal: '2026-11-25', jenis: 'Pengeluaran', kategori: 'Makan & Minum', akun: 'Cash', nominal: 320000, catatan: 'Konsumsi harian minggu ke-4' }
+        const excelTransactions = [
+            { id: 5, tanggal: '2026-11-01', tipe: 'Income', kantong: 'My Pocket', kategori: 'Gaji Utama', deskripsi: 'Gaji Bulan November 2026', nominal: 3040000, rekening: 'SeaBank', status: 'Aset / Non-Expense' },
+            { id: 6, tanggal: '2026-11-01', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Makanan & Minuman', deskripsi: 'Beli Kopi', nominal: 44000, rekening: 'GoPay', status: 'Terdaftar di Plan' },
+            { id: 7, tanggal: '2026-11-02', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Cicilan & Kewajiban', deskripsi: 'Cicilan Pasti Bulanan (Tgl 1-5)', nominal: 1182000, rekening: 'SeaBank', status: 'Terdaftar di Plan' },
+            { id: 8, tanggal: '2026-11-10', tipe: 'Income', kantong: 'Tabungan Nikah', kategori: 'Pemasukan Tabungan Nikah', deskripsi: 'Tabungan Nikah Gabungan (Rere & Firman - Batch 1)', nominal: 2400000, rekening: 'SeaBank', status: 'Aset / Non-Expense' },
+            { id: 9, tanggal: '2026-11-12', tipe: 'Expense', kantong: 'Tabungan Nikah', kategori: 'Beli Emas & Persiapan Nikah', deskripsi: 'Beli Emas dari Tabungan Nikah Batch 1 (Gelang 10k 1,4gr)', nominal: 2400000, rekening: 'SeaBank', status: 'Terdaftar di Plan' },
+            { id: 10, tanggal: '2026-11-15', tipe: 'Expense', kantong: 'Piutang / Dipinjam', kategori: 'Dipinjamkan (Piutang)', deskripsi: 'Uang Dipinjam Annisa', nominal: 500000, rekening: 'SeaBank', status: 'Terdaftar di Plan' },
+            { id: 11, tanggal: '2026-11-18', tipe: 'Expense', kantong: 'Piutang / Dipinjam', kategori: 'Dipinjamkan (Piutang)', deskripsi: 'Uang Dipinjam Firman', nominal: 150000, rekening: 'SeaBank', status: 'Terdaftar di Plan' },
+            { id: 12, tanggal: '2026-11-20', tipe: 'Income', kantong: 'Tabungan Nikah', kategori: 'Pemasukan Tabungan Nikah', deskripsi: 'Setoran Tabungan Nikah - Bagian Rere', nominal: 600000, rekening: 'SeaBank', status: 'Aset / Non-Expense' },
+            { id: 13, tanggal: '2026-11-20', tipe: 'Income', kantong: 'Tabungan Nikah', kategori: 'Pemasukan Tabungan Nikah', deskripsi: 'Setoran Tabungan Nikah - Bagian Firman', nominal: 600000, rekening: 'SeaBank', status: 'Aset / Non-Expense' },
+            { id: 14, tanggal: '2026-11-21', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Makanan & Minuman', deskripsi: 'Beliin Makan Firman', nominal: 10100, rekening: 'GoPay', status: 'Terdaftar di Plan' },
+            { id: 15, tanggal: '2026-11-21', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Makanan & Minuman', deskripsi: 'Jajan', nominal: 15000, rekening: 'Cash', status: 'Terdaftar di Plan' },
+            { id: 16, tanggal: '2026-11-22', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Makanan & Minuman', deskripsi: 'Jajan Chickroll', nominal: 17000, rekening: 'Cash', status: 'Terdaftar di Plan' },
+            { id: 17, tanggal: '2026-11-22', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Makanan & Minuman', deskripsi: 'Gacoan', nominal: 16000, rekening: 'Cash', status: 'Terdaftar di Plan' },
+            { id: 18, tanggal: '2026-11-23', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Transportasi & Bengkel', deskripsi: 'Ke Bengkel', nominal: 200000, rekening: 'SeaBank', status: 'Terdaftar di Plan' },
+            { id: 19, tanggal: '2026-11-24', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Cicilan & Kewajiban', deskripsi: 'Bayar Tagihan TikTok PayLater', nominal: 101000, rekening: 'SeaBank', status: 'Terdaftar di Plan' },
+            { id: 20, tanggal: '2026-11-25', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Makanan & Minuman', deskripsi: 'Beli Gacoan', nominal: 8000, rekening: 'SeaBank', status: 'Terdaftar di Plan' },
+            { id: 21, tanggal: '2026-11-25', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Makanan & Minuman', deskripsi: 'Beli Susu', nominal: 5800, rekening: 'SeaBank', status: 'Terdaftar di Plan' },
+            { id: 22, tanggal: '2026-11-26', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Skincare & Personal', deskripsi: 'Beli serum skin1004', nominal: 72320, rekening: 'SeaBank', status: 'Terdaftar di Plan' },
+            { id: 23, tanggal: '2026-11-01', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Skincare & Personal', deskripsi: 'Beli COSRX', nominal: 129045, rekening: 'SeaBank', status: 'Terdaftar di Plan' },
+            { id: 24, tanggal: '2026-11-26', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Tagihan & Utilitas', deskripsi: 'Beli Pulsa', nominal: 20780, rekening: 'SeaBank', status: 'Terdaftar di Plan' },
+            { id: 25, tanggal: '2026-11-26', tipe: 'Income', kantong: 'My Pocket', kategori: 'Freelance / Proyek', deskripsi: 'Upah FWA', nominal: 100000, rekening: 'SeaBank', status: 'Aset / Non-Expense' },
+            { id: 26, tanggal: '2026-11-26', tipe: 'Income', kantong: 'My Pocket', kategori: 'Tagihan & Utilitas', deskripsi: 'ICLOUD bulanan', nominal: 107000, rekening: 'SeaBank', status: 'Aset / Non-Expense' },
+            { id: 27, tanggal: '2026-11-26', tipe: 'Income', kantong: 'My Pocket', kategori: 'Tagihan & Utilitas', deskripsi: 'ICLOUD bulanan', nominal: 96000, rekening: 'SeaBank', status: 'Aset / Non-Expense' },
+            { id: 28, tanggal: '2026-11-26', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Tagihan & Utilitas', deskripsi: 'Shopee vip', nominal: 29900, rekening: 'SeaBank', status: 'Terdaftar di Plan' },
+            { id: 29, tanggal: '2026-11-26', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Tagihan & Utilitas', deskripsi: 'ICLOUD bulanan', nominal: 194000, rekening: 'SeaBank', status: 'Terdaftar di Plan' },
+            { id: 30, tanggal: '2026-11-26', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Transportasi & Bengkel', deskripsi: 'Bensin', nominal: 15000, rekening: 'Cash', status: 'Terdaftar di Plan' },
+            { id: 31, tanggal: '2026-11-26', tipe: 'Expense', kantong: 'My Pocket', kategori: 'Keluarga & Sosial', deskripsi: 'Top Up Bapa', nominal: 10000, rekening: 'SeaBank', status: 'Terdaftar di Plan' },
+            { id: 32, tanggal: '2026-11-26', tipe: 'Income', kantong: 'My Pocket', kategori: 'Keluarga & Sosial', deskripsi: 'Top Up Bapa', nominal: 15000, rekening: 'Cash', status: 'Aset / Non-Expense' }
         ];
 
-        let transactions = JSON.parse(localStorage.getItem(STORAGE_KEY)) || sampleTransactions;
+        const planVsRealitaData = [
+            { kategori: 'Cicilan & Kewajiban', plan: 1285000, realita: 1283000, sisa: 2000, usage: 99.84, status: 'HAMPIR LIMIT', ket: 'Terkendali' },
+            { kategori: 'Makanan & Minuman', plan: 450000, realita: 115900, sisa: 334100, usage: 25.76, status: 'AMAN', ket: 'Terkendali' },
+            { kategori: 'Transportasi & Bengkel', plan: 250000, realita: 215000, sisa: 35000, usage: 86.00, status: 'HAMPIR LIMIT', ket: 'Terkendali' },
+            { kategori: 'Tagihan & Utilitas', plan: 150000, realita: 244680, sisa: -94680, usage: 163.12, status: 'OVER BUDGET', ket: 'Melebihi Anggaran' },
+            { kategori: 'Belanja & Kebutuhan', plan: 150000, realita: 0, sisa: 150000, usage: 0.00, status: 'AMAN', ket: 'Terkendali' },
+            { kategori: 'Skincare & Personal', plan: 125000, realita: 201365, sisa: -76365, usage: 161.09, status: 'OVER BUDGET', ket: 'Melebihi Anggaran' },
+            { kategori: 'Keluarga & Sosial', plan: 150000, realita: 10000, sisa: 140000, usage: 6.67, status: 'AMAN', ket: 'Terkendali' },
+            { kategori: 'Hiburan & Lifestyle', plan: 100000, realita: 0, sisa: 100000, usage: 0.00, status: 'AMAN', ket: 'Terkendali' },
+            { kategori: 'Kesehatan & Darurat', plan: 80000, realita: 0, sisa: 80000, usage: 0.00, status: 'AMAN', ket: 'Terkendali' },
+            { kategori: 'Investasi RDPU / Emas', plan: 200000, realita: 0, sisa: 200000, usage: 0.00, status: 'AMAN', ket: 'Terkendali' },
+            { kategori: 'Beli Emas & Persiapan Nikah', plan: 0, realita: 2400000, sisa: -2400000, usage: 100.00, status: 'POS KHUSUS', ket: 'Dana Terpisah / Insidental' },
+            { kategori: 'Dipinjamkan (Piutang)', plan: 0, realita: 650000, sisa: -650000, usage: 100.00, status: 'POS KHUSUS', ket: 'Dana Terpisah / Insidental' }
+        ];
 
-        function formatRupiah(angka) {
-            return 'Rp ' + Number(angka).toLocaleString('id-ID');
+        const kantongData = [
+            { nama: 'My Pocket', awal: 2281443, masuk: 3358000, keluar: 2069945, akhir: 3569498, porsi: '52,73%', fungsi: 'Gaji, cicilan rutin, paylater, makan, kopi, jajan, bengkel' },
+            { nama: 'Family', awal: 1000000, masuk: 0, keluar: 0, akhir: 1000000, porsi: '14,77%', fungsi: 'Alokasi kebutuhan rumah tangga & keluarga' },
+            { nama: 'My Savings', awal: 500000, masuk: 0, keluar: 0, akhir: 500000, porsi: '7,39%', fungsi: 'Tabungan pribadi & setoran investasi RDPU / Emas' },
+            { nama: 'Tabungan Nikah', awal: 0, masuk: 3600000, keluar: 2400000, akhir: 1200000, porsi: '17,73%', fungsi: 'Gabungan Rere & Firman; Batch 1 (Gelang 1,4gr 2,322jt) sdh jd emas' },
+            { nama: 'Dana Darurat', awal: 500000, masuk: 0, keluar: 0, akhir: 500000, porsi: '7,39%', fungsi: 'Dana cadangan kesehatan & kondisi mendesak' },
+            { nama: 'Piutang / Dipinjam', awal: 650000, masuk: 0, keluar: 650000, akhir: 0, porsi: '0,00%', fungsi: 'Dana keluar dipinjam teman/pasangan (cek rincian piutang di bawah)' }
+        ];
+
+        const rekeningData = [
+            { nama: 'SeaBank', awal: 4651300, masuk: 6943000, keluar: 5002845, akhir: 6591455, porsi: '97,37%', catatan: 'Saldo SeaBank aktif (Rp 6.758.300 setelah TikTok PayLater)' },
+            { nama: 'GoPay', awal: 207143, masuk: 0, keluar: 54100, akhir: 153043, porsi: '2,26%', catatan: 'Saldo e-wallet GoPay aktif (Rp 153.043)' },
+            { nama: 'Cash', awal: 73000, masuk: 15000, keluar: 63000, akhir: 25000, porsi: '0,37%', catatan: 'Uang tunai di dompet fisik (Rp 25.000)' },
+            { nama: 'BNI', awal: 0, masuk: 0, keluar: 0, akhir: 0, porsi: '0,00%', catatan: 'Rekening BNI (siap digunakan jika ada transaksi)' },
+            { nama: 'ShopeePay', awal: 0, masuk: 0, keluar: 0, akhir: 0, porsi: '0,00%', catatan: 'Saldo ShopeePay (siap digunakan jika ada transaksi)' }
+        ];
+
+        const emasData = [
+            { no: 1, tgl: '2024-12-12', jenis: 'Gelang', nama: 'Gelang Emas 10K (Koleksi 2024)', kadar: '10K', berat: 1.6, harga: 1401600, pos: 'Pribadi (Rere)', perGram: 876000 },
+            { no: 2, tgl: '2025-07-08', jenis: 'Kalung', nama: 'Kalung Emas 10K', kadar: '10K', berat: 2.0, harga: 2286000, pos: 'Pribadi (Rere)', perGram: 1143000 },
+            { no: 3, tgl: '2025-09-26', jenis: 'Cincin', nama: 'Cincin Emas 8K #1', kadar: '8K', berat: 0.7, harga: 909000, pos: 'Pribadi (Rere)', perGram: 1298571 },
+            { no: 4, tgl: '2025-12-08', jenis: 'Anting', nama: 'Anting Emas 8K', kadar: '8K', berat: 0.6, harga: 1038000, pos: 'Pribadi (Rere)', perGram: 1730000 },
+            { no: 5, tgl: '2026-03-03', jenis: 'Cincin', nama: 'Cincin Emas 8K #2', kadar: '8K', berat: 0.7, harga: 1287989, pos: 'Pribadi (Rere)', perGram: 1839984 },
+            { no: 6, tgl: '2026-09-01', jenis: 'Gelang', nama: 'Gelang Emas 10K (Batch Tabungan Nikah)', kadar: '10K', berat: 1.4, harga: 2322000, pos: 'Tabungan Nikah', perGram: 1658571 }
+        ];
+
+        const vendorNikahData = [
+            { pos: 'Mahar & Seserahan Emas', budget: 25000000, bayar: 2322000, sisa: 22678000, status: 'DP / Cicil', vendor: 'Toko Emas', catatan: 'Sudah ada Gelang 10K 1,4 gr (Rp 2.322.000)' },
+            { pos: 'Cincin Nikah', budget: 3500000, bayar: 0, sisa: 3500000, status: 'Belum Bayar / Survey', vendor: '-', catatan: 'Survei model & kadar cincin nikah' },
+            { pos: 'KUA & Administrasi Nikah', budget: 1000000, bayar: 0, sisa: 1000000, status: 'Belum Bayar / Survey', vendor: 'KUA', catatan: 'Biaya pencatatan & berkas' },
+            { pos: 'Akad & Dekorasi', budget: 8000000, bayar: 0, sisa: 8000000, status: 'Belum Bayar / Survey', vendor: '-', catatan: 'Dekorasi akad / lamaran' },
+            { pos: 'Catering & Konsumsi', budget: 12000000, bayar: 0, sisa: 12000000, status: 'Belum Bayar / Survey', vendor: '-', catatan: 'Estimasi tamu keluarga & kerabat' },
+            { pos: 'MUA & Busana Pengantin', budget: 6000000, bayar: 0, sisa: 6000000, status: 'Belum Bayar / Survey', vendor: '-', catatan: 'Makeup akad & baju pengantin' },
+            { pos: 'Dokumentasi (Foto & Video)', budget: 3500000, bayar: 0, sisa: 3500000, status: 'Belum Bayar / Survey', vendor: '-', catatan: 'Foto & video liputan' },
+            { pos: 'Undangan & Souvenir', budget: 2000000, bayar: 0, sisa: 2000000, status: 'Belum Bayar / Survey', vendor: '-', catatan: 'Undangan digital & cetak' },
+            { pos: 'Dana Cadangan Nikah', budget: 2000000, bayar: 0, sisa: 2000000, status: 'Belum Bayar / Survey', vendor: '-', catatan: 'Biaya tak terduga hari-H' }
+        ];
+
+        const masterKategori = {
+            Expense: ['Cicilan & Kewajiban', 'Makanan & Minuman', 'Transportasi & Bengkel', 'Tagihan & Utilitas', 'Belanja & Kebutuhan', 'Skincare & Personal', 'Keluarga & Sosial', 'Hiburan & Lifestyle', 'Kesehatan & Darurat', 'Investasi RDPU / Emas', 'Beli Emas & Persiapan Nikah', 'Dipinjamkan (Piutang)'],
+            Income: ['Gaji Utama', 'Freelance / Proyek', 'Pemasukan Tabungan Nikah', 'Pelunasan Piutang', 'Bonus & THR', 'Tagihan & Utilitas', 'Keluarga & Sosial', 'Lain-lain'],
+            Saving: ['Investasi RDPU / Emas', 'Pemasukan Tabungan Nikah', 'My Savings', 'Dana Darurat']
+        };
+
+        let transactions = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [...excelTransactions];
+
+        function formatRp(num) {
+            const sign = num < 0 ? '-' : '';
+            return sign + 'Rp ' + Math.abs(Math.round(num)).toLocaleString('id-ID');
         }
 
-        function setJenis(jenis) {
-            document.getElementById('txJenis').value = jenis;
-            document.getElementById('btnKeluar').classList.toggle('active', jenis === 'Pengeluaran');
-            document.getElementById('btnMasuk').classList.toggle('active', jenis === 'Pemasukan');
+        function getStatusBadgeClass(status) {
+            if (status === 'AMAN' || status === 'Lunas') return 'badge-aman';
+            if (status === 'OVER BUDGET') return 'badge-over';
+            if (status === 'HAMPIR LIMIT' || status === 'DP / Cicil') return 'badge-limit';
+            return 'badge-khusus';
+        }
 
-            const selectKat = document.getElementById('txKategori');
-            selectKat.innerHTML = '';
-            kategoriMap[jenis].forEach(kat => {
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function updateKategoriOptions() {
+            const tipe = document.getElementById('txTipe').value;
+            const sel = document.getElementById('txKategori');
+            sel.innerHTML = '';
+            masterKategori[tipe].forEach(k => {
                 const opt = document.createElement('option');
-                opt.value = kat;
-                opt.textContent = kat;
-                selectKat.appendChild(opt);
+                opt.value = k;
+                opt.textContent = k;
+                sel.appendChild(opt);
             });
         }
 
-        function saveData() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+        function init3DCharts() {
+            if (typeof Chart === 'undefined') return;
+
+            // Plugin efek 3D bevel & bayangan
+            const plugin3D = {
+                id: 'effect3D',
+                beforeDatasetDraw(chart) {
+                    const { ctx } = chart;
+                    ctx.save();
+                    ctx.shadowColor = 'rgba(130, 62, 42, 0.25)';
+                    ctx.shadowBlur = 12;
+                    ctx.shadowOffsetX = 4;
+                    ctx.shadowOffsetY = 8;
+                },
+                afterDatasetDraw(chart) {
+                    chart.ctx.restore();
+                }
+            };
+
+            // 1. Diagram 3D Pie Distribusi Kantong
+            new Chart(document.getElementById('chart3DKantong'), {
+                type: 'pie',
+                data: {
+                    labels: ['My Pocket', 'Tabungan Nikah', 'Family', 'My Savings', 'Dana Darurat'],
+                    datasets: [{
+                        data: [3569498, 1200000, 1000000, 500000, 500000],
+                        backgroundColor: ['#F28B6B', '#FF9EB5', '#7EB6FF', '#7CD9B0', '#FFD17A'],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 3,
+                        hoverOffset: 12
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    rotation: -25,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { family: 'Georgia', size: 11 }, boxWidth: 12 }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => ` ${ctx.label}: ${formatRp(ctx.raw)}`
+                            }
+                        }
+                    }
+                },
+                plugins: [plugin3D]
+            });
+
+            // 2. Diagram 3D Bar Plan vs Realita (Pos Rutin Aktif)
+            const activeBudget = planVsRealitaData.slice(0, 7);
+            new Chart(document.getElementById('chart3DBudget'), {
+                type: 'bar',
+                data: {
+                    labels: activeBudget.map(b => b.kategori.split(' ')[0]),
+                    datasets: [
+                        {
+                            label: 'Plan Budget',
+                            data: activeBudget.map(b => b.plan),
+                            backgroundColor: '#A8D0FF',
+                            borderColor: '#6EA8F5',
+                            borderWidth: 1.5,
+                            borderRadius: 8
+                        },
+                        {
+                            label: 'Realita',
+                            data: activeBudget.map(b => b.realita),
+                            backgroundColor: '#F28B6B',
+                            borderColor: '#C45938',
+                            borderWidth: 1.5,
+                            borderRadius: 8
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { ticks: { font: { family: 'Georgia', size: 11 } }, grid: { display: false } },
+                        y: {
+                            ticks: {
+                                font: { family: 'Georgia', size: 10 },
+                                callback: val => 'Rp ' + (val / 1000) + 'rb'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { font: { family: 'Georgia', size: 11 }, boxWidth: 12 } },
+                        tooltip: {
+                            callbacks: { label: ctx => ` ${ctx.dataset.label}: ${formatRp(ctx.raw)}` }
+                        }
+                    }
+                },
+                plugins: [plugin3D]
+            });
+
+            // 3. Diagram 3D Doughnut Komposisi Aset & Kekayaan
+            new Chart(document.getElementById('chart3DAset'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Emas Pribadi (5,6 gr)', 'Saldo Wallet', 'Emas Nikah (1,4 gr)', 'Piutang Aktif'],
+                    datasets: [{
+                        data: [6922589, 6769498, 2322000, 650000],
+                        backgroundColor: ['#FFD17A', '#7EB6FF', '#FF9EB5', '#B9A7F8'],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 3,
+                        hoverOffset: 12
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '54%',
+                    plugins: {
+                        legend: { position: 'bottom', labels: { font: { family: 'Georgia', size: 11 }, boxWidth: 12 } },
+                        tooltip: {
+                            callbacks: { label: ctx => ` ${ctx.label}: ${formatRp(ctx.raw)}` }
+                        }
+                    }
+                },
+                plugins: [plugin3D]
+            });
+        }
+
+        function renderStaticTables() {
+            const dashBudget = document.getElementById('dashBudgetBody');
+            const fullBudget = document.getElementById('fullBudgetBody');
+            dashBudget.innerHTML = '';
+            fullBudget.innerHTML = '';
+
+            planVsRealitaData.forEach(item => {
+                const badgeCls = getStatusBadgeClass(item.status);
+                dashBudget.innerHTML += `
+                    <tr>
+                        <td><strong>${item.kategori}</strong></td>
+                        <td class="num">${formatRp(item.plan)}</td>
+                        <td class="num">${formatRp(item.realita)}</td>
+                        <td class="num ${item.sisa < 0 ? 'amt-out' : 'amt-in'}">${formatRp(item.sisa)}</td>
+                        <td><span class="badge ${badgeCls}">${item.status}</span></td>
+                    </tr>
+                `;
+
+                const barWidth = Math.min(item.usage, 100);
+                fullBudget.innerHTML += `
+                    <tr>
+                        <td><strong>${item.kategori}</strong></td>
+                        <td class="num">${formatRp(item.plan)}</td>
+                        <td class="num">${formatRp(item.realita)}</td>
+                        <td class="num ${item.sisa < 0 ? 'amt-out' : 'amt-in'}">${formatRp(item.sisa)}</td>
+                        <td style="min-width: 130px;">
+                            <div style="font-size: 0.78rem; font-weight: 700;">${item.usage.toFixed(1).replace('.', ',')}%</div>
+                            <div class="progress-wrap">
+                                <div class="progress-fill ${item.usage > 100 ? 'over' : ''}" style="width: ${barWidth}%"></div>
+                            </div>
+                        </td>
+                        <td><span class="badge ${badgeCls}">${item.status}</span></td>
+                        <td>${item.ket}</td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('kantongBody').innerHTML = kantongData.map(k => `
+                <tr>
+                    <td><strong>${k.nama}</strong></td>
+                    <td class="num">${formatRp(k.awal)}</td>
+                    <td class="num amt-in">${formatRp(k.masuk)}</td>
+                    <td class="num amt-out">${formatRp(k.keluar)}</td>
+                    <td class="num"><strong>${formatRp(k.akhir)}</strong></td>
+                    <td class="num">${k.porsi}</td>
+                    <td>${k.fungsi}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('rekeningBody').innerHTML = rekeningData.map(r => `
+                <tr>
+                    <td><strong>${r.nama}</strong></td>
+                    <td class="num">${formatRp(r.awal)}</td>
+                    <td class="num amt-in">${formatRp(r.masuk)}</td>
+                    <td class="num amt-out">${formatRp(r.keluar)}</td>
+                    <td class="num"><strong>${formatRp(r.akhir)}</strong></td>
+                    <td class="num">${r.porsi}</td>
+                    <td>${r.catatan}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('emasBody').innerHTML = emasData.map(e => `
+                <tr>
+                    <td>${e.no}</td>
+                    <td style="white-space: nowrap;">${e.tgl}</td>
+                    <td>${e.jenis}</td>
+                    <td><strong>${e.nama}</strong></td>
+                    <td><span class="badge badge-limit">${e.kadar}</span></td>
+                    <td class="num">${e.berat.toFixed(1).replace('.', ',')} gr</td>
+                    <td class="num"><strong>${formatRp(e.harga)}</strong></td>
+                    <td><span class="badge ${e.pos.includes('Nikah') ? 'badge-expense' : 'badge-income'}">${e.pos}</span></td>
+                    <td class="num">${formatRp(e.perGram)}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('vendorNikahBody').innerHTML = vendorNikahData.map(v => `
+                <tr>
+                    <td><strong>${v.pos}</strong></td>
+                    <td class="num">${formatRp(v.budget)}</td>
+                    <td class="num amt-in">${formatRp(v.bayar)}</td>
+                    <td class="num">${formatRp(v.sisa)}</td>
+                    <td><span class="badge ${v.status === 'DP / Cicil' ? 'badge-dp' : 'badge-khusus'}">${v.status}</span></td>
+                    <td>${v.vendor}</td>
+                    <td>${v.catatan}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderTransaksi() {
+            const fTipe = document.getElementById('filterTipe').value;
+            const fKantong = document.getElementById('filterKantong').value;
+            const fRek = document.getElementById('filterRek').value;
+            const fSearch = document.getElementById('filterSearch').value.toLowerCase();
+
+            const filtered = transactions.filter(t => {
+                if (fTipe !== 'ALL' && t.tipe !== fTipe) return false;
+                if (fKantong !== 'ALL' && t.kantong !== fKantong) return false;
+                if (fRek !== 'ALL' && t.rekening !== fRek) return false;
+                if (fSearch && !t.deskripsi.toLowerCase().includes(fSearch) && !t.kategori.toLowerCase().includes(fSearch)) return false;
+                return true;
+            });
+
+            document.getElementById('txCountBadge').textContent = `${filtered.length} Transaksi`;
+            document.getElementById('txTableBody').innerHTML = filtered.map(t => {
+                const isInc = t.tipe === 'Income';
+                return `
+                    <tr>
+                        <td style="white-space: nowrap;">${t.tanggal}</td>
+                        <td><span class="badge ${isInc ? 'badge-income' : 'badge-expense'}">${t.tipe}</span></td>
+                        <td><span class="badge badge-peach">${t.kantong}</span></td>
+                        <td>${t.kategori}</td>
+                        <td><strong>${t.deskripsi}</strong></td>
+                        <td><span class="badge badge-rek">${t.rekening}</span></td>
+                        <td class="num ${isInc ? 'amt-in' : 'amt-out'}">${isInc ? '+' : '-'} ${formatRp(t.nominal)}</td>
+                        <td style="font-size: 0.78rem; color: var(--text-muted);">${t.status}</td>
+                        <td class="no-print"><button class="btn-del" onclick="deleteTx(${t.id})" title="Hapus">✕</button></td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         document.getElementById('txForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            const tipe = document.getElementById('txTipe').value;
             const newTx = {
                 id: Date.now(),
                 tanggal: document.getElementById('txTanggal').value,
-                jenis: document.getElementById('txJenis').value,
+                tipe: tipe,
+                kantong: document.getElementById('txKantong').value,
                 kategori: document.getElementById('txKategori').value,
-                akun: document.getElementById('txAkun').value,
+                deskripsi: document.getElementById('txDeskripsi').value.trim(),
                 nominal: parseFloat(document.getElementById('txNominal').value),
-                catatan: document.getElementById('txCatatan').value.trim()
+                rekening: document.getElementById('txRekening').value,
+                status: tipe === 'Expense' ? 'Terdaftar di Plan' : 'Aset / Non-Expense'
             };
-
-            transactions.unshift(newTx);
-            saveData();
+            transactions.push(newTx);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
             this.reset();
-            document.getElementById('txTanggal').valueAsDate = new Date();
-            setJenis(newTx.jenis);
-            renderAll();
+            document.getElementById('txTanggal').value = '2026-11-27';
+            updateKategoriOptions();
+            renderTransaksi();
         });
 
         function deleteTx(id) {
-            if (confirm('Hapus transaksi ini dari laporan?')) {
+            if (confirm('Hapus baris transaksi ini?')) {
                 transactions = transactions.filter(t => t.id !== id);
-                saveData();
-                renderAll();
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+                renderTransaksi();
             }
         }
 
-        function resetSampleData() {
-            if (confirm('Kembalikan ke data contoh awal? Data yang baru ditambahkan akan diganti.')) {
-                transactions = [...sampleTransactions];
-                saveData();
-                renderAll();
-            }
-        }
-
-        function renderAll() {
-            const bulan = document.getElementById('filterBulan').value;
-            const jenis = document.getElementById('filterJenis').value;
-            const akun = document.getElementById('filterAkun').value;
-            const cari = document.getElementById('filterCari').value.toLowerCase();
-
-            const filtered = transactions
-                .filter(t => !bulan || t.tanggal.startsWith(bulan))
-                .filter(t => jenis === 'ALL' || t.jenis === jenis)
-                .filter(t => akun === 'ALL' || t.akun === akun)
-                .filter(t => !cari || t.catatan.toLowerCase().includes(cari) || t.kategori.toLowerCase().includes(cari))
-                .sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
-
-            // Hitung Summary (berdasarkan filter bulan)
-            const bulanTx = transactions.filter(t => !bulan || t.tanggal.startsWith(bulan));
-            let masuk = 0, keluar = 0, cMasuk = 0, cKeluar = 0, tabungan = 0;
-
-            bulanTx.forEach(t => {
-                if (t.jenis === 'Pemasukan') {
-                    masuk += t.nominal;
-                    cMasuk++;
-                } else {
-                    keluar += t.nominal;
-                    cKeluar++;
-                    if (t.kategori.includes('Tabungan') || t.kategori.includes('Investasi')) {
-                        tabungan += t.nominal;
-                    }
-                }
-            });
-
-            const saldo = masuk - keluar;
-            const rasio = masuk > 0 ? ((tabungan / masuk) * 100).toFixed(1).replace('.', ',') : '0';
-
-            document.getElementById('totalSaldo').textContent = formatRupiah(saldo);
-            document.getElementById('totalMasuk').textContent = formatRupiah(masuk);
-            document.getElementById('countMasuk').textContent = `${cMasuk} transaksi masuk`;
-            document.getElementById('totalKeluar').textContent = formatRupiah(keluar);
-            document.getElementById('countKeluar').textContent = `${cKeluar} transaksi keluar`;
-            document.getElementById('totalTabungan').textContent = formatRupiah(tabungan);
-            document.getElementById('rasioTabungan').textContent = `${rasio}% dari pemasukan`;
-            document.getElementById('periodeInfo').textContent = bulan ? `Periode: ${bulan}` : 'Semua periode';
-
-            // Render Tabel
-            const tbody = document.getElementById('txTableBody');
-            tbody.innerHTML = '';
-            document.getElementById('filteredCount').textContent = `${filtered.length} transaksi`;
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="empty-state">Belum ada transaksi yang sesuai filter 🌸</td></tr>`;
-            } else {
-                filtered.forEach(t => {
-                    const tr = document.createElement('tr');
-                    const isMasuk = t.jenis === 'Pemasukan';
-                    tr.innerHTML = `
-                        <td style="white-space: nowrap;">${t.tanggal}</td>
-                        <td><span class="badge ${isMasuk ? 'badge-masuk' : 'badge-keluar'}">${t.jenis}</span></td>
-                        <td>${t.kategori}</td>
-                        <td>${t.catatan}</td>
-                        <td><span class="badge badge-rek">${t.akun}</span></td>
-                        <td style="text-align: right; white-space: nowrap;" class="${isMasuk ? 'amount-masuk' : 'amount-keluar'}">
-                            ${isMasuk ? '+' : '-'} ${formatRupiah(t.nominal)}
-                        </td>
-                        <td class="no-print" style="text-align: center;">
-                            <button class="btn-del" onclick="deleteTx(${t.id})" title="Hapus">✕</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }
-
-            // Render Saldo Per Akun (keseluruhan)
-            const akunTotals = {};
-            transactions.forEach(t => {
-                if (!akunTotals[t.akun]) akunTotals[t.akun] = 0;
-                akunTotals[t.akun] += (t.jenis === 'Pemasukan' ? t.nominal : -t.nominal);
-            });
-
-            const accountList = document.getElementById('accountList');
-            accountList.innerHTML = '';
-            Object.keys(akunTotals).forEach((namaAkun, idx) => {
-                const div = document.createElement('div');
-                div.className = `account-item ${idx % 2 === 1 ? 'peach' : ''}`;
-                div.innerHTML = `
-                    <span>${namaAkun}</span>
-                    <span>${formatRupiah(akunTotals[namaAkun])}</span>
-                `;
-                accountList.appendChild(div);
-            });
-
-            // Render Ringkasan Kategori Pengeluaran
-            const catTotals = {};
-            bulanTx.filter(t => t.jenis === 'Pengeluaran').forEach(t => {
-                catTotals[t.kategori] = (catTotals[t.kategori] || 0) + t.nominal;
-            });
-
-            const catSummary = document.getElementById('categorySummary');
-            catSummary.innerHTML = '';
-            const sortedCats = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
-
-            if (sortedCats.length === 0) {
-                catSummary.innerHTML = `<div style="color: var(--text-muted); font-size: 0.9rem;">Belum ada pengeluaran pada periode ini.</div>`;
-            } else {
-                sortedCats.forEach(([kat, val]) => {
-                    const chip = document.createElement('div');
-                    chip.className = 'cat-chip';
-                    chip.innerHTML = `
-                        <div class="cat-chip-title">${kat}</div>
-                        <div class="cat-chip-val">${formatRupiah(val)}</div>
-                    `;
-                    catSummary.appendChild(chip);
-                });
+        function resetExcelData() {
+            if (confirm('Kembalikan seluruh jurnal ke 28 data asli dari file Excel?')) {
+                transactions = [...excelTransactions];
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+                renderTransaksi();
             }
         }
 
         function exportCSV() {
-            const headers = ['Tanggal', 'Jenis', 'Kategori', 'Rekening', 'Nominal', 'Keterangan'];
+            const headers = ['Tanggal', 'Tipe', 'Kantong', 'Kategori', 'Deskripsi', 'Nominal', 'Rekening', 'Status Budget'];
             const rows = transactions.map(t => [
-                t.tanggal,
-                t.jenis,
-                `"${t.kategori}"`,
-                `"${t.akun}"`,
-                t.nominal,
-                `"${t.catatan.replace(/"/g, '""')}"`
+                t.tanggal, t.tipe, `"${t.kantong}"`, `"${t.kategori}"`, `"${t.deskripsi.replace(/"/g, '""')}"`, t.nominal, t.rekening, `"${t.status}"`
             ]);
-            const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
-            const encodedUri = encodeURI(csvContent);
+            const csv = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
             const link = document.createElement('a');
-            link.setAttribute('href', encodedUri);
-            link.setAttribute('download', `Laporan_Keuangan_Rere_${new Date().toISOString().slice(0,10)}.csv`);
+            link.setAttribute('href', encodeURI(csv));
+            link.setAttribute('download', 'Personal_Finance_Rere_November_2026.csv');
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
 
         // Init
-        document.getElementById('txTanggal').valueAsDate = new Date();
-        document.getElementById('filterBulan').value = '2026-11';
-        setJenis('Pengeluaran');
-        renderAll();
+        document.getElementById('txTanggal').value = '2026-11-27';
+        updateKategoriOptions();
+        renderStaticTables();
+        renderTransaksi();
+        window.addEventListener('load', init3DCharts);
     </script>
 </body>
 </html>
