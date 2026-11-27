@@ -499,9 +499,10 @@
                 <p>Multi-Tahun (2026–2031) dengan Diagram 3D • Terintegrasi Tabungan Emas (Rp 9,24 Juta / 7,0 gr) & Monitoring Nikah • Periode: <strong>November 2026</strong></p>
             </div>
             <div class="header-actions no-print">
+                <span id="syncStatus" class="badge badge-peach" style="padding: 8px 12px;">⏳ Siap Sinkronisasi</span>
+                <button class="btn btn-peach" onclick="syncFromCloud(true)">☁️ Sync Cloud</button>
                 <button class="btn btn-blue" onclick="exportCSV()">📥 Export CSV</button>
                 <button class="btn btn-outline" onclick="window.print()">🖨️ Cetak / PDF</button>
-                <button class="btn btn-outline" onclick="resetExcelData()">🔄 Reset Data Excel</button>
             </div>
         </header>
 
@@ -1094,7 +1095,9 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'rere_finance_excel_exact_v3';
+        // GANTI URL DI BAWAH INI DENGAN URL WEB APP GOOGLE APPS SCRIPT KAMU
+        const GOOGLE_SCRIPT_URL = 'PASTE_URL_WEB_APP_APPS_SCRIPT_DI_SINI';
+        const STORAGE_KEY = 'rere_finance_cloud_cache_v4';
 
         const excelTransactions = [
             { id: 5, tanggal: '2026-11-01', tipe: 'Income', kantong: 'My Pocket', kategori: 'Gaji Utama', deskripsi: 'Gaji Bulan November 2026', nominal: 3040000, rekening: 'SeaBank', status: 'Aset / Non-Expense' },
@@ -1466,7 +1469,57 @@
             }).join('');
         }
 
-        document.getElementById('txForm').addEventListener('submit', function(e) {
+        function setSyncBadge(text, cls) {
+            const el = document.getElementById('syncStatus');
+            if (!el) return;
+            el.textContent = text;
+            el.className = 'badge ' + cls;
+        }
+
+        async function syncFromCloud(showAlert = false) {
+            if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes('PASTE_URL')) {
+                setSyncBadge('⚠️ URL Cloud Belum Diisi', 'badge-limit');
+                if (showAlert) alert('Silakan isi GOOGLE_SCRIPT_URL di kode HTML dengan URL Web App dari Google Apps Script terlebih dahulu.');
+                return;
+            }
+            setSyncBadge('⏳ Menyinkronkan...', 'badge-khusus');
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL + '?action=read&t=' + Date.now());
+                const json = await res.json();
+                if (json.status === 'success' && Array.isArray(json.data)) {
+                    transactions = json.data;
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+                    renderTransaksi();
+                    setSyncBadge('✅ Tersinkron Cloud', 'badge-aman');
+                    if (showAlert) alert('Berhasil menyinkronkan ' + transactions.length + ' transaksi dari Google Sheets!');
+                } else {
+                    setSyncBadge('⚠️ Cek Sheet Cloud', 'badge-limit');
+                }
+            } catch (err) {
+                console.error(err);
+                setSyncBadge('⚠️ Offline (Cache Lokal)', 'badge-over');
+            }
+        }
+
+        async function pushToCloud(action, payload) {
+            if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes('PASTE_URL')) return;
+            setSyncBadge('⏳ Menyimpan ke Cloud...', 'badge-khusus');
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action, ...payload })
+                });
+                setSyncBadge('✅ Tersimpan di Cloud', 'badge-aman');
+                setTimeout(() => syncFromCloud(false), 1200);
+            } catch (err) {
+                console.error(err);
+                setSyncBadge('⚠️ Gagal Kirim Cloud', 'badge-over');
+            }
+        }
+
+        document.getElementById('txForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const tipe = document.getElementById('txTipe').value;
             const newTx = {
@@ -1486,21 +1539,15 @@
             document.getElementById('txTanggal').value = '2026-11-27';
             updateKategoriOptions();
             renderTransaksi();
+            await pushToCloud('add', { tx: newTx });
         });
 
-        function deleteTx(id) {
-            if (confirm('Hapus baris transaksi ini?')) {
+        async function deleteTx(id) {
+            if (confirm('Hapus baris transaksi ini di HP, Laptop & Google Sheets?')) {
                 transactions = transactions.filter(t => t.id !== id);
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
                 renderTransaksi();
-            }
-        }
-
-        function resetExcelData() {
-            if (confirm('Kembalikan seluruh jurnal ke 28 data asli dari file Excel?')) {
-                transactions = [...excelTransactions];
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
-                renderTransaksi();
+                await pushToCloud('delete', { id });
             }
         }
 
@@ -1523,7 +1570,7 @@
         updateKategoriOptions();
         renderStaticTables();
         renderTransaksi();
-        window.addEventListener('load', init3DCharts);
+        window.addEventListener('load', () => { init3DCharts(); syncFromCloud(false); });
     </script>
 </body>
 </html>
